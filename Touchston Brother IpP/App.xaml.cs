@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Touchston_Brother_IpP
+namespace Touchstone_Brother_IpP
 {
     /// <summary>
     /// Interaction logic for App.xaml
