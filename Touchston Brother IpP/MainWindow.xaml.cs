@@ -31,8 +31,8 @@ namespace Touchstone_Brother_IpP
         {
             InitializeComponent();
             PdfManage.Flush();
-            Thread ReadDataThread = new Thread(new ThreadStart(PdfManage.ReadData));
-            ReadDataThread.Start();
+            PdfManage.ReadData();
+            PdfManage.PdfExtractData();
 
         }
 
@@ -62,7 +62,7 @@ namespace Touchstone_Brother_IpP
         }
         public void CustomersPage()
         {
-
+            PdfManage.PushToList();
         }
         public void PrintPage()
         {

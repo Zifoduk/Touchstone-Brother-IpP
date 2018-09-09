@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Touchstone_Brother_IpP.Models;
 
 namespace Touchstone_Brother_IpP
 {
@@ -20,9 +21,18 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class Labels : Page
     {
+        public PDFManagment.Label SelectedLabel { get; set; }
         public Labels()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedLabel = (PDFManagment.Label)TestBinding.SelectedItem;
+            var namee = SelectedLabel.Name;
+            var idd = SelectedLabel.ID;
+            Console.WriteLine("Name: " + SelectedLabel.Name + ", ID: " + SelectedLabel.ID);
         }
     }
 }

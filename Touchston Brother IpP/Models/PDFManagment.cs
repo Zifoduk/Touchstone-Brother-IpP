@@ -18,6 +18,7 @@ using iTextSharp.text.pdf.parser;
 using Path = System.IO.Path;
 using System.Collections;
 using System.Windows.Threading;
+using System.Windows.Controls;
 
 namespace Touchstone_Brother_IpP.Models
 {
@@ -60,7 +61,7 @@ namespace Touchstone_Brother_IpP.Models
             }
         }
 
-
+        //=========================================================
         #region Flushing
 
         //Flushes all pdf which contain the words "@ipostparcels"
@@ -89,29 +90,126 @@ namespace Touchstone_Brother_IpP.Models
             pdfFiles.ForEach(file => File.Move(file, (SourceFolder + Path.GetFileName(file))));
 
         }
-        
-        #endregion /Flushing
 
+        #endregion
+
+        //=========================================================
         public void ReadData()
         {
-            while (true)
+            ArrayList arrayList = new ArrayList();
+
+            DataTable results = new DataTable();
+            string cn_string = Properties.Settings.Default.dbCustomersConnectionString;
+            using (SqlConnection cn_connection = new SqlConnection(cn_string))
+            using (SqlCommand command = new SqlCommand("SELECT * FROM tbl_Customers", cn_connection))
+            using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
             {
-                ArrayList arrayList = new ArrayList();
 
-                DataTable results = new DataTable();
-                string cn_string = Properties.Settings.Default.dbCustomersConnectionString;
-                using (SqlConnection cn_connection = new SqlConnection(cn_string))
-                using (SqlCommand command = new SqlCommand("SELECT * FROM tbl_Customers", cn_connection))
-                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
-                {
+                dataAdapter.Fill(results);
 
-                    dataAdapter.Fill(results);
-                }
-
-                Application.Current.Dispatcher.Invoke(new Action(() => { MainWindow.labelsPage.TestBinding.ItemsSource = results.DefaultView; }));
-                Thread.Sleep(100);
             }
+
+            MainWindow.labelsPage.TestBinding.ItemsSource = results.DefaultView;
+
+            var array = results.Rows[0].ItemArray.Select(x => x.ToString()).ToArray();
         }
+
+        //=========================================================
+        #region Collecting Flushed PDF Data
+
+        public List<Label> SourceLabels = new List<Label>();
+        public string[] FileList(string path, string[] format)
+        {
+            var files = Directory.EnumerateFiles(path, "*.*").Where(f => format.Contains(Path.GetExtension(f), StringComparer.OrdinalIgnoreCase)).ToArray();
+            return files;
+        }
+        public int[] DataPositions(string[] PageInformation)
+        {
+            int[] positions = new int[3];
+            positions[0] = Array.FindIndex(PageInformation, row => row.Contains("___"));
+            positions[1] = Array.FindIndex(PageInformation, row => row.Contains("Next Day"));
+            positions[2] = PageInformation.Length;
+            return positions;
+        }
+        public Label DataSorter(string[] PageInformation)
+        {
+            Label label = new Label();
+
+            int[] dp = DataPositions(PageInformation);
+
+            //temp ID
+            label.ID = new Random().Next(1, 50);
+
+            //Name
+            label.Name = PageInformation[dp[0] + 2];
+
+            //Address
+            var tempAdArry = new List<string>();
+            for (var i = (dp[0] + 3); i < (dp[1] - 2); i++)
+                tempAdArry.Add(PageInformation[i]);
+            label.Address = string.Join(",\r\n", tempAdArry.ToArray());
+
+            //Barcode
+            label.Barcode = PageInformation[dp[0] + 1];
+
+            //Delivery Date
+            label.DeliveryDate = PageInformation[dp[1] - 1];
+
+            //Consignment Number
+            label.ConsignmentNumber = PageInformation[dp[1] + 1];
+
+            //PostCode
+            label.PostCode = PageInformation[dp[1] + 3];
+
+            //Telephone Number
+            label.Telephone = PageInformation[dp[1] + 5];
+
+            //Location
+            label.Location = PageInformation[dp[2] - 2];
+
+
+            //Location Number
+            label.LocationNumber = PageInformation[dp[2] - 1];
+
+            //Parcel Number
+            label.ParcelNumber = PageInformation[dp[1] + 4];
+
+            //Parcel Size
+            label.ParcelSize = PageInformation[dp[2] - 3];
+
+            //Weight
+            label.Weight = PageInformation[dp[1] + 2];
+
+            return label;
+        }
+
+        public void PdfExtractData()
+        {
+            var SourceFiles = FileList(SourceFolder, new string[] {".pdf"});
+            foreach(var file in SourceFiles)
+                using (FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (PdfReader reader = new PdfReader(fileStream))
+                {
+                    for (int page = 1; page <= reader.NumberOfPages; page++)
+                    {
+                        string[] PageLines = new string[] { };
+                        var text = PdfTextExtractor.GetTextFromPage(reader, page, new SimpleTextExtractionStrategy());
+                        PageLines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        Label tempLabel = DataSorter(PageLines);
+                        SourceLabels.Add(tempLabel);
+                    }
+                }
+        }
+        #endregion
+
+
+        //=========================================================
+        public void PushToList()
+        {
+            MainWindow.labelsPage.TestBinding.ItemsSource = SourceLabels;
+        }
+
+
 
 
 
@@ -120,8 +218,6 @@ namespace Touchstone_Brother_IpP.Models
         //---------------------------------------------------------
         public class Label
         {
-            public string PDFtext { get; set; }
-            public string[] ResultArr { get; set; }
             public string Name { get; set; }
             public string Address { get; set; }
             public string Barcode { get; set; }
@@ -134,6 +230,7 @@ namespace Touchstone_Brother_IpP.Models
             public string ParcelNumber { get; set; }
             public string ParcelSize { get; set; }
             public string Weight { get; set; }
+            public int ID { get; set; }
         }
 
     }
