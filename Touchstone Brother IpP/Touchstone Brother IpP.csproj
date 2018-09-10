@@ -100,6 +100,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbCustomersDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Labels.xaml.cs">
       <DependentUpon>Labels.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Page Include="Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Labels.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

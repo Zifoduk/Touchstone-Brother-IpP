@@ -67,10 +67,10 @@
                         </Button>
                     </Grid>
                     <ListView Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListViewItem Height="60" Name="Settings">
+                        <ListViewItem Height="60" Name="Home">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Settings" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Settings" VerticalAlignment="Center" Margin="20 10"/>
+                                <materialDesign:PackIcon Kind="Home" Width="25" Height="25" VerticalAlignment="Center"/>
+                                <TextBlock Text="Home" VerticalAlignment="Center" Margin="20 10"/>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem Height="60" Name="Labels">
@@ -85,13 +85,12 @@
                                 <TextBlock Text="Customers" VerticalAlignment="Center" Margin="20 10"/>
                             </StackPanel>
                         </ListViewItem>
-                        <ListViewItem Height="60" Name="Print">
+                        <ListViewItem Height="60" Name="Settings">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Printer" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Print" VerticalAlignment="Center" Margin="20 10"/>
+                                <materialDesign:PackIcon Kind="Settings" Width="25" Height="25" VerticalAlignment="Center"/>
+                                <TextBlock Text="Settings" VerticalAlignment="Center" Margin="20 10"/>
                             </StackPanel>
                         </ListViewItem>
-
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>

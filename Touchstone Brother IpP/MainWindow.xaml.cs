@@ -23,6 +23,7 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Home homePage = new Home();
         public static Settings settingsPage = new Settings();
         public static Labels labelsPage = new Labels();
         public static PDFManagment PdfManage = new PDFManagment();
@@ -31,7 +32,9 @@ namespace Touchstone_Brother_IpP
         public MainWindow()
         {
             InitializeComponent();
+            MainView.Content = homePage;
             PdfManage.Initialize();
+            labelsPage.pDFManagment = PdfManage;
 
         }
 
@@ -49,7 +52,10 @@ namespace Touchstone_Brother_IpP
                 method.Invoke(this, null);
             }
         }
-
+        public void HomePage()
+        {
+            MainView.Content = homePage;
+        }
         public void SettingsPage()
         {
             MainView.Content = settingsPage;
@@ -57,13 +63,9 @@ namespace Touchstone_Brother_IpP
         public void LabelsPage()
         {
             MainView.Content = labelsPage;
-            
-        }
-        public void CustomersPage()
-        {
             PdfManage.PushToList();
         }
-        public void PrintPage()
+        public void CustomersPage()
         {
 
         }

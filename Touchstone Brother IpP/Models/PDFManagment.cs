@@ -60,6 +60,18 @@ namespace Touchstone_Brother_IpP.Models
                 return folder;
             }
         }
+        public static string ArchiveFolder
+        {
+            get
+            {
+                var folder = UserRoamingDataFolder + @"Archive\";
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+                return folder;
+            }
+        }
 
         //=========================================================
         public void Initialize()
@@ -76,6 +88,7 @@ namespace Touchstone_Brother_IpP.Models
         //---------------------------------------------------------
         public void Flush()
         {
+            PdfReader.unethicalreading = true;
 
             List<string> pdfFiles = new List<string>();
             List<string> tempPdfFiles = new List<string>();
@@ -83,20 +96,53 @@ namespace Touchstone_Brother_IpP.Models
             foreach (var file in Directory.GetFiles(DownloadsFolder).Where(f => f.Contains(".pdf")).ToArray())
                 tempPdfFiles.Add(file);
 
-            foreach(var file in tempPdfFiles)
+            Int64 Checksize = 0;
+
+
+            foreach (var file in tempPdfFiles)
+            {
+                if (File.Exists(file))
+                {
+                    Checksize = new FileInfo(file).Length;
+                    if (Checksize < 100000)
+                    {
+                        if (File.Exists(file))
+                            File.Delete(file);
+                        break;
+                    }
+                }
+
                 using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                 using (PdfReader reader = new PdfReader(fs))
                 {
                     string[] textlines = new string[] { };
                     var text = PdfTextExtractor.GetTextFromPage(reader, 1, new SimpleTextExtractionStrategy());
                     textlines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach(var line in textlines)
+                    foreach (var line in textlines)
                         if (line.Contains("@ipostparcels"))
                             pdfFiles.Add(file);
                 }
-
+            }
             pdfFiles.ForEach(file => File.Move(file, (SourceFolder + Path.GetFileName(file))));
 
+            Archive();
+        }
+
+        public void Archive()
+        {
+            foreach (var file in Directory.GetFiles(SourceFolder).Where(f => f.Contains(".pdf")).ToArray())
+            {
+                
+                var CreationTime = File.GetLastWriteTime(file);
+                var timeDifference = (TimeSpan)CreationTime.Subtract(DateTime.Now);
+                var differenceOfTime = (int)Math.Round(Math.Abs(timeDifference.TotalDays));
+                if(differenceOfTime > 1)
+                {
+                    var NewFileLocation = ArchiveFolder + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + Path.GetFileName(file);
+                    File.SetLastWriteTime(file, DateTime.Now);
+                    File.Move(file, NewFileLocation);
+                }
+            }
         }
 
         #endregion
@@ -108,18 +154,12 @@ namespace Touchstone_Brother_IpP.Models
             ArrayList arrayList = new ArrayList();
 
             DataTable results = new DataTable();
-            string cn_string = Properties.Settings.Default.dbCustomersConnectionString;
+            string cn_string = Touchstone_Brother_IpP.Properties.Settings.Default.dbCustomersConnectionString;
             using (SqlConnection cn_connection = new SqlConnection(cn_string))
             using (SqlCommand command = new SqlCommand("SELECT * FROM tbl_Customers", cn_connection))
             using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
             {
-                SqlConnection connect = new SqlConnection();
-                connect.ConnectionString = cn_string;
-                connect.Open();
-                if (connect.State == ConnectionState.Open)
-                    Console.WriteLine("lol");
                 dataAdapter.Fill(results);
-
             }
 
             MainWindow.labelsPage.TestBinding.ItemsSource = results.DefaultView;

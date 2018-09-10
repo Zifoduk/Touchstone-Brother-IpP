@@ -19,6 +19,8 @@ namespace Touchstone_Brother_IpP
     public partial class Labels : Page
     {
         public TLabel SelectedLabel { get; set; }
+        public PDFManagment pDFManagment;
+
         public Labels()
         {
             InitializeComponent();
@@ -63,6 +65,36 @@ namespace Touchstone_Brother_IpP
                 }
             }
 
+        }
+
+        private void ButtonSort_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender as Button;
+            if(button.Name == "ButtonSortID")
+            {
+                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.ID).ToList();
+                pDFManagment.PushToList();
+            }
+            if (button.Name == "ButtonSortName")
+            {
+                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.Name).ToList();
+                pDFManagment.PushToList();
+            }
+            if (button.Name == "ButtonSortPostCode")
+            {
+                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.PostCode).ToList();
+                pDFManagment.PushToList();
+            }
+            if (button.Name == "ButtonSortDeliveryDate")
+            {
+                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.DeliveryDate).ToList();
+                pDFManagment.PushToList();
+            }
+        }
+
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            pDFManagment.PushToList();
         }
     }
 }
