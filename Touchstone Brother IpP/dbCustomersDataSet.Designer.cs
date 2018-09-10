@@ -322,6 +322,8 @@ namespace Touchstone_Brother_IpP {
             
             private global::System.Data.DataColumn columnNumLabels;
             
+            private global::System.Data.DataColumn columnlol;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public tbl_CustomersDataTable() {
@@ -389,6 +391,14 @@ namespace Touchstone_Brother_IpP {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lolColumn {
+                get {
+                    return this.columnlol;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -424,13 +434,14 @@ namespace Touchstone_Brother_IpP {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public tbl_CustomersRow Addtbl_CustomersRow(string Name, int idLabel, int NumLabels) {
+            public tbl_CustomersRow Addtbl_CustomersRow(string Name, int idLabel, int NumLabels, string lol) {
                 tbl_CustomersRow rowtbl_CustomersRow = ((tbl_CustomersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         Name,
                         idLabel,
-                        NumLabels};
+                        NumLabels,
+                        lol};
                 rowtbl_CustomersRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowtbl_CustomersRow);
                 return rowtbl_CustomersRow;
@@ -464,6 +475,7 @@ namespace Touchstone_Brother_IpP {
                 this.columnName = base.Columns["Name"];
                 this.columnidLabel = base.Columns["idLabel"];
                 this.columnNumLabels = base.Columns["NumLabels"];
+                this.columnlol = base.Columns["lol"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -477,6 +489,8 @@ namespace Touchstone_Brother_IpP {
                 base.Columns.Add(this.columnidLabel);
                 this.columnNumLabels = new global::System.Data.DataColumn("NumLabels", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumLabels);
+                this.columnlol = new global::System.Data.DataColumn("lol", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlol);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnIdCustomer}, true));
                 this.columnIdCustomer.AutoIncrement = true;
@@ -488,6 +502,7 @@ namespace Touchstone_Brother_IpP {
                 this.columnName.AllowDBNull = false;
                 this.columnName.MaxLength = 50;
                 this.columnidLabel.AllowDBNull = false;
+                this.columnlol.MaxLength = 10;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1117,6 +1132,22 @@ namespace Touchstone_Brother_IpP {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lol {
+                get {
+                    try {
+                        return ((string)(this[this.tabletbl_Customers.lolColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lol\' in table \'tbl_Customers\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletbl_Customers.lolColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsNumLabelsNull() {
                 return this.IsNull(this.tabletbl_Customers.NumLabelsColumn);
             }
@@ -1125,6 +1156,18 @@ namespace Touchstone_Brother_IpP {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetNumLabelsNull() {
                 this[this.tabletbl_Customers.NumLabelsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IslolNull() {
+                return this.IsNull(this.tabletbl_Customers.lolColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetlolNull() {
+                this[this.tabletbl_Customers.lolColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1687,40 +1730,45 @@ namespace Touchstone_Brother_IpP.dbCustomersDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("Name", "Name");
             tableMapping.ColumnMappings.Add("idLabel", "idLabel");
             tableMapping.ColumnMappings.Add("NumLabels", "NumLabels");
+            tableMapping.ColumnMappings.Add("lol", "lol");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[tbl_Customers] WHERE (([IdCustomer] = @Original_IdCustomer) AN" +
-                "D ([Name] = @Original_Name) AND ([idLabel] = @Original_idLabel) AND ((@IsNull_Nu" +
-                "mLabels = 1 AND [NumLabels] IS NULL) OR ([NumLabels] = @Original_NumLabels)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[tbl_Customers] WHERE (([IdCustomer] = @Original_IdCustomer) AND ([Name] = @Original_Name) AND ([idLabel] = @Original_idLabel) AND ((@IsNull_NumLabels = 1 AND [NumLabels] IS NULL) OR ([NumLabels] = @Original_NumLabels)) AND ((@IsNull_lol = 1 AND [lol] IS NULL) OR ([lol] = @Original_lol)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IdCustomer", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IdCustomer", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_idLabel", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "idLabel", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_lol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_lol", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[tbl_Customers] ([Name], [idLabel], [NumLabels]) VALUES (@Name," +
-                " @idLabel, @NumLabels);\r\nSELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Cu" +
-                "stomers WHERE (IdCustomer = SCOPE_IDENTITY())";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[tbl_Customers] ([Name], [idLabel], [NumLabels], [lol]) VALUES " +
+                "(@Name, @idLabel, @NumLabels, @lol);\r\nSELECT IdCustomer, Name, idLabel, NumLabel" +
+                "s, lol FROM tbl_Customers WHERE (IdCustomer = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@idLabel", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "idLabel", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@lol", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[tbl_Customers] SET [Name] = @Name, [idLabel] = @idLabel, [NumLabels] = @NumLabels WHERE (([IdCustomer] = @Original_IdCustomer) AND ([Name] = @Original_Name) AND ([idLabel] = @Original_idLabel) AND ((@IsNull_NumLabels = 1 AND [NumLabels] IS NULL) OR ([NumLabels] = @Original_NumLabels)));
-SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer = @IdCustomer)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[tbl_Customers] SET [Name] = @Name, [idLabel] = @idLabel, [NumLabels] = @NumLabels, [lol] = @lol WHERE (([IdCustomer] = @Original_IdCustomer) AND ([Name] = @Original_Name) AND ([idLabel] = @Original_idLabel) AND ((@IsNull_NumLabels = 1 AND [NumLabels] IS NULL) OR ([NumLabels] = @Original_NumLabels)) AND ((@IsNull_lol = 1 AND [lol] IS NULL) OR ([lol] = @Original_lol)));
+SELECT IdCustomer, Name, idLabel, NumLabels, lol FROM tbl_Customers WHERE (IdCustomer = @IdCustomer)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@idLabel", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "idLabel", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@lol", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IdCustomer", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IdCustomer", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_idLabel", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "idLabel", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_NumLabels", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NumLabels", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_lol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_lol", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "lol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IdCustomer", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "IdCustomer", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -1728,7 +1776,7 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::Touchstone_Brother_IpP.Properties.Settings.Default.dbCustomersConnectionString;
+            this._connection.ConnectionString = "";
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1737,7 +1785,7 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT IdCustomer, Name, idLabel, NumLabels FROM dbo.tbl_Customers";
+            this._commandCollection[0].CommandText = "SELECT IdCustomer, Name, idLabel, NumLabels, lol FROM dbo.tbl_Customers";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1798,7 +1846,7 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels) {
+        public virtual int Delete(int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels, string Original_lol) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_IdCustomer));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
@@ -1814,6 +1862,14 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
             else {
                 this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((Original_lol == null)) {
+                this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[6].Value = ((string)(Original_lol));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1835,7 +1891,7 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string Name, int idLabel, global::System.Nullable<int> NumLabels) {
+        public virtual int Insert(string Name, int idLabel, global::System.Nullable<int> NumLabels, string lol) {
             if ((Name == null)) {
                 throw new global::System.ArgumentNullException("Name");
             }
@@ -1848,6 +1904,12 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
             }
             else {
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((lol == null)) {
+                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(lol));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1869,7 +1931,7 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Name, int idLabel, global::System.Nullable<int> NumLabels, int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels, int IdCustomer) {
+        public virtual int Update(string Name, int idLabel, global::System.Nullable<int> NumLabels, string lol, int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels, string Original_lol, int IdCustomer) {
             if ((Name == null)) {
                 throw new global::System.ArgumentNullException("Name");
             }
@@ -1883,23 +1945,37 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
             else {
                 this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Original_IdCustomer));
+            if ((lol == null)) {
+                this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(lol));
+            }
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_IdCustomer));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((string)(Original_Name));
+                this.Adapter.UpdateCommand.Parameters[5].Value = ((string)(Original_Name));
             }
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_idLabel));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_idLabel));
             if ((Original_NumLabels.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_NumLabels.Value));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_NumLabels.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(IdCustomer));
+            if ((Original_lol == null)) {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((string)(Original_lol));
+            }
+            this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(IdCustomer));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1920,8 +1996,8 @@ SELECT IdCustomer, Name, idLabel, NumLabels FROM tbl_Customers WHERE (IdCustomer
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Name, int idLabel, global::System.Nullable<int> NumLabels, int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels) {
-            return this.Update(Name, idLabel, NumLabels, Original_IdCustomer, Original_Name, Original_idLabel, Original_NumLabels, Original_IdCustomer);
+        public virtual int Update(string Name, int idLabel, global::System.Nullable<int> NumLabels, string lol, int Original_IdCustomer, string Original_Name, int Original_idLabel, global::System.Nullable<int> Original_NumLabels, string Original_lol) {
+            return this.Update(Name, idLabel, NumLabels, lol, Original_IdCustomer, Original_Name, Original_idLabel, Original_NumLabels, Original_lol, Original_IdCustomer);
         }
     }
     
@@ -2108,7 +2184,7 @@ SELECT Id, Name, Address, Barcode, DeliveryDate, ConsignmentNumber, PostCode, Te
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::Touchstone_Brother_IpP.Properties.Settings.Default.dbCustomersConnectionString;
+            this._connection.ConnectionString = "";
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

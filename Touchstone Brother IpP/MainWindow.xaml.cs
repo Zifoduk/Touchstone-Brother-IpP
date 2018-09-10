@@ -26,13 +26,12 @@ namespace Touchstone_Brother_IpP
         public static Settings settingsPage = new Settings();
         public static Labels labelsPage = new Labels();
         public static PDFManagment PdfManage = new PDFManagment();
+        public static PrintManagement PrintManage = new PrintManagement();
 
         public MainWindow()
         {
             InitializeComponent();
-            PdfManage.Flush();
-            PdfManage.ReadData();
-            PdfManage.PdfExtractData();
+            PdfManage.Initialize();
 
         }
 

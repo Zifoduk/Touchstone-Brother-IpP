@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touchstone Brother IpP", "Touchston Brother IpP\Touchstone Brother IpP.csproj", "{F57538D3-8990-4D66-A5D8-DDC20342B96A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touchstone Brother IpP", "Touchstone Brother IpP\Touchstone Brother IpP.csproj", "{F57538D3-8990-4D66-A5D8-DDC20342B96A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B362818E-62EE-44A4-AC08-0FAFD347FFE6}
+		SolutionGuid = {5A006D44-A44B-4223-8EEC-92FC84474596}
 	EndGlobalSection
 EndGlobal

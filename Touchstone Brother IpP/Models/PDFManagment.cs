@@ -47,8 +47,8 @@ namespace Touchstone_Brother_IpP.Models
         }
 
         private static readonly string DownloadsFolder = KnownFolders.Downloads.Path;
-        private  readonly string DataFolder = UserRoamingDataFolder;
-        private static string SourceFolder
+        public static string DataFolder = UserRoamingDataFolder;
+        public static string SourceFolder
         {
             get
             {
@@ -59,6 +59,14 @@ namespace Touchstone_Brother_IpP.Models
                 }
                 return folder;
             }
+        }
+
+        //=========================================================
+        public void Initialize()
+        {
+            Flush();
+            ReadData();
+            ExtractData();
         }
 
         //=========================================================
@@ -94,6 +102,7 @@ namespace Touchstone_Brother_IpP.Models
         #endregion
 
         //=========================================================
+        #region Read Data
         public void ReadData()
         {
             ArrayList arrayList = new ArrayList();
@@ -104,7 +113,11 @@ namespace Touchstone_Brother_IpP.Models
             using (SqlCommand command = new SqlCommand("SELECT * FROM tbl_Customers", cn_connection))
             using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
             {
-
+                SqlConnection connect = new SqlConnection();
+                connect.ConnectionString = cn_string;
+                connect.Open();
+                if (connect.State == ConnectionState.Open)
+                    Console.WriteLine("lol");
                 dataAdapter.Fill(results);
 
             }
@@ -113,11 +126,12 @@ namespace Touchstone_Brother_IpP.Models
 
             var array = results.Rows[0].ItemArray.Select(x => x.ToString()).ToArray();
         }
+        #endregion
 
         //=========================================================
-        #region Collecting Flushed PDF Data
+        #region Extract Flushed PDF Data
 
-        public List<Label> SourceLabels = new List<Label>();
+        public List<TLabel> SourceLabels = new List<TLabel>();
         public string[] FileList(string path, string[] format)
         {
             var files = Directory.EnumerateFiles(path, "*.*").Where(f => format.Contains(Path.GetExtension(f), StringComparer.OrdinalIgnoreCase)).ToArray();
@@ -131,9 +145,9 @@ namespace Touchstone_Brother_IpP.Models
             positions[2] = PageInformation.Length;
             return positions;
         }
-        public Label DataSorter(string[] PageInformation)
+        public TLabel DataSorter(string[] PageInformation)
         {
-            Label label = new Label();
+            TLabel label = new TLabel();
 
             int[] dp = DataPositions(PageInformation);
 
@@ -183,7 +197,7 @@ namespace Touchstone_Brother_IpP.Models
             return label;
         }
 
-        public void PdfExtractData()
+        public void ExtractData()
         {
             var SourceFiles = FileList(SourceFolder, new string[] {".pdf"});
             foreach(var file in SourceFiles)
@@ -195,13 +209,12 @@ namespace Touchstone_Brother_IpP.Models
                         string[] PageLines = new string[] { };
                         var text = PdfTextExtractor.GetTextFromPage(reader, page, new SimpleTextExtractionStrategy());
                         PageLines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                        Label tempLabel = DataSorter(PageLines);
+                        TLabel tempLabel = DataSorter(PageLines);
                         SourceLabels.Add(tempLabel);
                     }
                 }
         }
         #endregion
-
 
         //=========================================================
         public void PushToList()
@@ -216,22 +229,23 @@ namespace Touchstone_Brother_IpP.Models
         //Label
         //Class for Labels
         //---------------------------------------------------------
-        public class Label
-        {
-            public string Name { get; set; }
-            public string Address { get; set; }
-            public string Barcode { get; set; }
-            public string DeliveryDate { get; set; }
-            public string ConsignmentNumber { get; set; }
-            public string PostCode { get; set; }
-            public string Telephone { get; set; }
-            public string Location { get; set; }
-            public string LocationNumber { get; set; }
-            public string ParcelNumber { get; set; }
-            public string ParcelSize { get; set; }
-            public string Weight { get; set; }
-            public int ID { get; set; }
-        }
 
+    }
+
+    public class TLabel
+    {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Barcode { get; set; }
+        public string DeliveryDate { get; set; }
+        public string ConsignmentNumber { get; set; }
+        public string PostCode { get; set; }
+        public string Telephone { get; set; }
+        public string Location { get; set; }
+        public string LocationNumber { get; set; }
+        public string ParcelNumber { get; set; }
+        public string ParcelSize { get; set; }
+        public string Weight { get; set; }
+        public int ID { get; set; }
     }
 }
