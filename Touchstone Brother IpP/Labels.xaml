@@ -62,7 +62,7 @@
                                         <Button Foreground="White" Margin="3" Background="#00adff" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3" Click="ButtonPrint_Click">
                                             <materialDesign:PackIcon Kind="Printer" Width="25" Height="25" HorizontalContentAlignment="Left"/>
                                         </Button>
-                                        <Button Click="ButtonAddDatabase_Click" Foreground="White" Margin="3" Background="{Binding ButtonBackground}" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3">
+                                        <Button Click="ButtonAddDatabase_Click" Foreground="White" Margin="3" Background="#0294db" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3">
                                             <materialDesign:PackIcon Kind="DatabasePlus" Width="25" Height="25" HorizontalContentAlignment="Left"/>
                                         </Button>
                                         <Button Foreground="White" Margin="3" Background="#00adff" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3" Click="ButtonFindProfile_Click">

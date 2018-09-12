@@ -20,7 +20,6 @@ namespace Touchstone_Brother_IpP
     {
         public TLabel SelectedLabel { get; set; }
         public PDFManagment pDFManagment;
-        public Brush ButtonBackground = new SolidColorBrush(Colors.Red);
 
         public Labels()
         {
@@ -34,8 +33,6 @@ namespace Touchstone_Brother_IpP
                 Button button = VisualTreeHelper.GetChild(ButtonAddDatabase, 0) as Button;
                 button.Background = Brushes.Red;
             }*/
-            ButtonBackground = new SolidColorBrush(Colors.Red);
-
         }
 
         private void RMenuItem_Click(object sender, RoutedEventArgs e)
