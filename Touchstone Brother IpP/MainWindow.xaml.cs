@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Touchstone_Brother_IpP.Models;
+using Nito;
+using Nito.AsyncEx;
 
 namespace Touchstone_Brother_IpP
 {
@@ -23,19 +25,19 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static List<Customer> CustomersList = new List<Customer>();
+
         public static Home homePage = new Home();
         public static Settings settingsPage = new Settings();
         public static Labels labelsPage = new Labels();
+        public static Customers customers = new Customers();
         public static PDFManagment PdfManage = new PDFManagment();
         public static PrintManagement PrintManage = new PrintManagement();
+        public static FirebaseManagement FirebaseManage = new FirebaseManagement();
 
         public MainWindow()
         {
             InitializeComponent();
-            MainView.Content = homePage;
-            PdfManage.Initialize();
-            labelsPage.pDFManagment = PdfManage;
-
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -67,7 +69,35 @@ namespace Touchstone_Brother_IpP
         }
         public void CustomersPage()
         {
+            MainView.Content = customers;
+            FirebaseManage.PushtoListView(CustomersList);
+        }
 
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            FirebaseManage.Initialize();
+            Customer newcustomer = new Customer { Name = "steve", AllLabels = new List<TLabel> { new TLabel
+            {
+            Name = "steve",
+            Address = "cxds",
+            Barcode = "898805",
+            DeliveryDate = "sunday",
+            ConsignmentNumber = "8974605",
+            PostCode = "SLLSA12",
+            Telephone = "31288312929",
+            Location =  "that place",
+            LocationNumber = "8",
+            ParcelNumber = "001", 
+            ParcelSize = "s",
+            Weight = "not enough"
+            } } };
+            //Task task = new Task(() => FirebaseManage.InsertCustomer(newcustomer));
+            FirebaseManage.InsertCustomer(newcustomer);
+            Thread.Sleep(500);
+            await FirebaseManage.RetrieveCustomers(CustomersList);
+            MainView.Content = homePage;
+            PdfManage.Initialize();
+            labelsPage.pDFManagment = PdfManage;
         }
     }
 }

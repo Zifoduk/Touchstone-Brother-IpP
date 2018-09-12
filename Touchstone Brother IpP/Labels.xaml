@@ -30,13 +30,13 @@
         </Grid>
         <Grid Grid.Row="1" Background="#ffcc00" >
             <StackPanel   Orientation="Horizontal">
-                <Button VerticalAlignment="Center" Height="50" Margin="110 0 0 0" x:Name="ButtonSortID" Click="ButtonSort_Click" Content="ID" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
-                <Button VerticalAlignment="Center" Height="50" Margin="5 0 0 0" x:Name="ButtonSortName" Click="ButtonSort_Click" Width="110" Content="Name" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="157
+ 0 0 0" x:Name="ButtonSortName" Click="ButtonSort_Click" Width="110" Content="Name" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
                 <Button VerticalAlignment="Center" Height="50" Margin="15 0 0 0" x:Name="ButtonSortPostCode" Click="ButtonSort_Click" Width="170" Content="Postcode" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
-                <Button VerticalAlignment="Center" Height="50" Margin="190 0 0 0" x:Name="ButtonSortDeliveryDate" Click="ButtonSort_Click" Width="190" Content="Collection Date" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="150 0 0 0" x:Name="ButtonSortDeliveryDate" Click="ButtonSort_Click" Width="190" Content="Collection Date" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
             </StackPanel>
         </Grid>
-        <ListView Grid.Row="2" Margin="10" Name="TestBinding" SelectedItem="{Binding SelectedLabel, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+        <ListView Grid.Row="2" Margin="10" Name="LabelListView" SelectedItem="{Binding SelectedLabel, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Getvalue" Click="RMenuItem_Click"/>
@@ -49,14 +49,28 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="70"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0" HorizontalAlignment="Left">
-                                    <Button Foreground="White" Background="#00adff" Width="55" Height="50" BorderBrush="#0294db" BorderThickness="3" Click="ButtonPrint_Click">
-                                        <materialDesign:PackIcon Kind="Printer" Width="25" Height="25" HorizontalContentAlignment="Left"/>
-                                    </Button>
+                                <StackPanel>
+                                    <TextBlock Text="Print" Foreground="#00adff" FontWeight="Bold"/>
+                                    <TextBlock Text="Create Profile" Foreground="#00adff" FontWeight="Bold"/>
+                                    <TextBlock Text="View Profile" Foreground="#00adff" FontWeight="Bold"/>
+                                </StackPanel>
+                                <Grid Grid.Column="1" HorizontalAlignment="Left">
+                                    <StackPanel>
+                                        <Button Foreground="White" Margin="3" Background="#00adff" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3" Click="ButtonPrint_Click">
+                                            <materialDesign:PackIcon Kind="Printer" Width="25" Height="25" HorizontalContentAlignment="Left"/>
+                                        </Button>
+                                        <Button Click="ButtonAddDatabase_Click" Foreground="White" Margin="3" Background="{Binding ButtonBackground}" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3">
+                                            <materialDesign:PackIcon Kind="DatabasePlus" Width="25" Height="25" HorizontalContentAlignment="Left"/>
+                                        </Button>
+                                        <Button Foreground="White" Margin="3" Background="#00adff" Width="55" Height="30" BorderBrush="#0294db" BorderThickness="3" Click="ButtonFindProfile_Click">
+                                            <materialDesign:PackIcon Kind="Account" Width="25" Height="25" HorizontalContentAlignment="Left"/>
+                                        </Button>
+                                    </StackPanel>
                                 </Grid>
-                                <WrapPanel Grid.Column="1">
+                                <WrapPanel Grid.Column="2">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="180"/>

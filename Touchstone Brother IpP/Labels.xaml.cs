@@ -20,23 +20,38 @@ namespace Touchstone_Brother_IpP
     {
         public TLabel SelectedLabel { get; set; }
         public PDFManagment pDFManagment;
+        public Brush ButtonBackground = new SolidColorBrush(Colors.Red);
 
         public Labels()
         {
             InitializeComponent();
         }
 
+        public void UIUpdate()
+        {
+            /*foreach(var item in LabelListView)
+            {
+                Button button = VisualTreeHelper.GetChild(ButtonAddDatabase, 0) as Button;
+                button.Background = Brushes.Red;
+            }*/
+            ButtonBackground = new SolidColorBrush(Colors.Red);
+
+        }
+
         private void RMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            SelectedLabel = (TLabel)TestBinding.SelectedItem;
-            var namee = SelectedLabel.Name;
-            var idd = SelectedLabel.ID;
-            Console.WriteLine("Name: " + SelectedLabel.Name + ", ID: " + SelectedLabel.ID);
+            SelectedLabel = (TLabel)LabelListView.SelectedItem;
+            Console.WriteLine("Name: " + SelectedLabel.Name);
         }
 
         private void ButtonPrintAll_Click(object sender, RoutedEventArgs e)
         {
                 
+        }
+
+        private void ButtonFindProfile_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         public static DependencyObject FindControlParent(DependencyObject dependency, Type type)
@@ -55,7 +70,7 @@ namespace Touchstone_Brother_IpP
         {
             var button = sender as Button;
             var ParentItem = FindControlParent(button, typeof(ListViewItem)) as ListViewItem;
-            SelectedLabel = TestBinding.ItemContainerGenerator.ItemFromContainer(ParentItem) as TLabel;
+            SelectedLabel = LabelListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as TLabel;
             if (SelectedLabel != null)
             {
                 MessageBoxResult result = MessageBox.Show("print?", "print?", MessageBoxButton.YesNo);
@@ -64,17 +79,11 @@ namespace Touchstone_Brother_IpP
                     MainWindow.PrintManage.Print(SelectedLabel);
                 }
             }
-
         }
 
         private void ButtonSort_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender as Button;
-            if(button.Name == "ButtonSortID")
-            {
-                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.ID).ToList();
-                pDFManagment.PushToList();
-            }
             if (button.Name == "ButtonSortName")
             {
                 pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.Name).ToList();
@@ -94,7 +103,29 @@ namespace Touchstone_Brother_IpP
 
         private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
+            pDFManagment.Flush();
+            pDFManagment.ExtractData();
             pDFManagment.PushToList();
+        }
+
+        private void ButtonAddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var ParentItem = FindControlParent(button, typeof(ListViewItem)) as ListViewItem;
+            SelectedLabel = LabelListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as TLabel;
+            var newCustomer = new Customer();
+            if (SelectedLabel != null)
+            {
+                newCustomer.Name = SelectedLabel.Name;
+                newCustomer.AllLabels = new List<TLabel>();
+                newCustomer.AllLabels.Add(SelectedLabel);
+                MainWindow.FirebaseManage.InsertCustomer(newCustomer);
+            }
+        }
+
+        private void ButtonAddDatabase_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

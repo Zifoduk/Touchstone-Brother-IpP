@@ -73,12 +73,19 @@ namespace Touchstone_Brother_IpP.Models
             }
         }
 
+        public List<TLabel> SourceLabels = new List<TLabel>();
+        public ICollection<TLabel> ISourceLabels
+        {
+            get;
+            set;
+        }
+
         //=========================================================
         public void Initialize()
         {
             Flush();
-            ReadData();
             ExtractData();
+            MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
         }
 
         //=========================================================
@@ -148,30 +155,8 @@ namespace Touchstone_Brother_IpP.Models
         #endregion
 
         //=========================================================
-        #region Read Data
-        public void ReadData()
-        {
-            ArrayList arrayList = new ArrayList();
-
-            DataTable results = new DataTable();
-            string cn_string = Touchstone_Brother_IpP.Properties.Settings.Default.dbCustomersConnectionString;
-            using (SqlConnection cn_connection = new SqlConnection(cn_string))
-            using (SqlCommand command = new SqlCommand("SELECT * FROM tbl_Customers", cn_connection))
-            using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
-            {
-                dataAdapter.Fill(results);
-            }
-
-            MainWindow.labelsPage.TestBinding.ItemsSource = results.DefaultView;
-
-            var array = results.Rows[0].ItemArray.Select(x => x.ToString()).ToArray();
-        }
-        #endregion
-
-        //=========================================================
         #region Extract Flushed PDF Data
 
-        public List<TLabel> SourceLabels = new List<TLabel>();
         public string[] FileList(string path, string[] format)
         {
             var files = Directory.EnumerateFiles(path, "*.*").Where(f => format.Contains(Path.GetExtension(f), StringComparer.OrdinalIgnoreCase)).ToArray();
@@ -192,7 +177,7 @@ namespace Touchstone_Brother_IpP.Models
             int[] dp = DataPositions(PageInformation);
 
             //temp ID
-            label.ID = new Random().Next(1, 50);
+            //label.ID = new Random().Next(1, 50);
 
             //Name
             label.Name = PageInformation[dp[0] + 2];
@@ -239,6 +224,8 @@ namespace Touchstone_Brother_IpP.Models
 
         public void ExtractData()
         {
+            if(SourceLabels.Count > 0)
+                SourceLabels.Clear();
             var SourceFiles = FileList(SourceFolder, new string[] {".pdf"});
             foreach(var file in SourceFiles)
                 using (FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -250,8 +237,16 @@ namespace Touchstone_Brother_IpP.Models
                         var text = PdfTextExtractor.GetTextFromPage(reader, page, new SimpleTextExtractionStrategy());
                         PageLines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
                         TLabel tempLabel = DataSorter(PageLines);
-                        SourceLabels.Add(tempLabel);
+                        var add = 0;
+                        SourceLabels.ForEach(s =>
+                        {
+                            if (s.ConsignmentNumber == tempLabel.ConsignmentNumber)
+                                add++;
+                        });
+                        if (add == 0)
+                            SourceLabels.Add(tempLabel);
                     }
+                    Console.WriteLine("completed sourcelist update");                    
                 }
         }
         #endregion
@@ -259,7 +254,10 @@ namespace Touchstone_Brother_IpP.Models
         //=========================================================
         public void PushToList()
         {
-            MainWindow.labelsPage.TestBinding.ItemsSource = SourceLabels;
+            //MainWindow.labelsPage.LabelListView.ItemsSource = SourceLabels;
+            ISourceLabels = SourceLabels.ToArray();
+            MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
+            MainWindow.labelsPage.UIUpdate();
         }
 
 
@@ -272,20 +270,5 @@ namespace Touchstone_Brother_IpP.Models
 
     }
 
-    public class TLabel
-    {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Barcode { get; set; }
-        public string DeliveryDate { get; set; }
-        public string ConsignmentNumber { get; set; }
-        public string PostCode { get; set; }
-        public string Telephone { get; set; }
-        public string Location { get; set; }
-        public string LocationNumber { get; set; }
-        public string ParcelNumber { get; set; }
-        public string ParcelSize { get; set; }
-        public string Weight { get; set; }
-        public int ID { get; set; }
-    }
+
 }
