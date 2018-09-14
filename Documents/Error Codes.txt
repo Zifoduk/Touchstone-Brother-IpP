@@ -1,0 +1,6 @@
+Error Codes:
+e-1: No problem, continue
+e3461: printer media not same as document media
+e3465: No Media installed in printer
+e4258: No brother printer installed / no driver installed
+e4261: No Brother printer connected

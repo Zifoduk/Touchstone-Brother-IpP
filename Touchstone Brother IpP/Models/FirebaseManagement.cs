@@ -16,7 +16,7 @@ namespace Touchstone_Brother_IpP.Models
         FirebaseClient firebase;
         private List<Customer> customers;
 
-        public void Initialize()
+        public FirebaseManagement()
         {
             firebase = new FirebaseClient("https://touchstoneipp.firebaseio.com/", new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult("IXN3HqrEuAbzokJmi5b61ERW5jynEDBiqXtuRKj7") });
         }

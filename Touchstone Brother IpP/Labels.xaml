@@ -48,14 +48,14 @@
                         <WrapPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="70"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="Print" Foreground="#00adff" FontWeight="Bold"/>
-                                    <TextBlock Text="Create Profile" Foreground="#00adff" FontWeight="Bold"/>
-                                    <TextBlock Text="View Profile" Foreground="#00adff" FontWeight="Bold"/>
+                                    <TextBlock Text="Print" Margin="0 10 0 0" Foreground="#00adff" FontWeight="Bold"/>
+                                    <TextBlock Text="Create Profile" Margin="0 20 0 0" Foreground="#00adff" FontWeight="Bold"/>
+                                    <TextBlock Text="View Profile" Margin="0 20 0 0" Foreground="#00adff" FontWeight="Bold"/>
                                 </StackPanel>
                                 <Grid Grid.Column="1" HorizontalAlignment="Left">
                                     <StackPanel>
@@ -73,20 +73,16 @@
                                 <WrapPanel Grid.Column="2">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="180"/>
-                                            <ColumnDefinition Width="180"/>
-                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Margin="20">
-                                            <TextBlock>
-                                            <Run Text="ID: "/>
-                                            <Run Text="{Binding ID}" FontWeight="Bold"/>
-                                            </TextBlock>
+                                        <StackPanel Grid.Column="0" Margin="0 20 0 0">
                                             <TextBlock Text="Name: "/>
-                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" TextWrapping="Wrap"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" Margin="20">
+                                        <StackPanel Grid.Column="1" Margin="0 20 0 0">
                                             <TextBlock Text="Address: "/>
                                             <TextBlock Text="{Binding Address}" FontWeight="Bold" TextWrapping="Wrap"/>
                                             <TextBlock Margin="0 2">
@@ -94,7 +90,7 @@
                                             <Run Text="{Binding PostCode}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="2" Margin="20">
+                                        <StackPanel Grid.Column="2" Margin="0 20 0 0">
                                             <TextBlock>
                                             <Run Text="Parcel Number: "/>
                                             <Run Text="{Binding ParcelNumber}" FontWeight="Bold"/>
@@ -104,7 +100,7 @@
                                             <Run Text="{Binding ParcelSize}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="3" Margin="20">
+                                        <StackPanel Grid.Column="3" Margin="0 20 0 0">
                                             <TextBlock>
                                             <Run Text="Collection Date: "/>
                                             <Run Text="{Binding DeliveryDate}" FontWeight="Bold"/>

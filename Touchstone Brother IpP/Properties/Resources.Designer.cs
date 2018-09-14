@@ -59,5 +59,15 @@ namespace Touchstone_Brother_IpP.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Label {
+            get {
+                object obj = ResourceManager.GetObject("Label", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

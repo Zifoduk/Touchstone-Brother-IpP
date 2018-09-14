@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Touchstone_Brother_IpP"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" Loaded="MainWindow_Loaded">
+        Title="MainWindow" Height="600" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" Loaded="MainWindow_Loaded" WindowStyle="ThreeDBorderWindow">
 
     <Window.Resources>
         <Storyboard x:Key="MenuOpen">
@@ -38,6 +38,9 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="50" Direction="360" ShadowDepth="0"/>
+    </Window.Effect>
 
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">

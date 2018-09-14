@@ -27,7 +27,7 @@ namespace Touchstone_Brother_IpP.Models
     public class PDFManagment
     {
 
-        private static string CheckDir(string dir)
+        public static string CheckDir(string dir)
         {
 
             if (!Directory.Exists(dir))
@@ -74,14 +74,10 @@ namespace Touchstone_Brother_IpP.Models
         }
 
         public List<TLabel> SourceLabels = new List<TLabel>();
-        public ICollection<TLabel> ISourceLabels
-        {
-            get;
-            set;
-        }
+        public ICollection<TLabel> ISourceLabels { get; set; }
 
         //=========================================================
-        public void Initialize()
+        public PDFManagment()
         {
             Flush();
             ExtractData();
@@ -259,14 +255,6 @@ namespace Touchstone_Brother_IpP.Models
             MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
             MainWindow.labelsPage.UIUpdate();
         }
-
-
-
-
-
-        //Label
-        //Class for Labels
-        //---------------------------------------------------------
 
     }
 

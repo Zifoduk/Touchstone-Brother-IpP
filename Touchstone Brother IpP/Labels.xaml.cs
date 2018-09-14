@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Forms = System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -70,8 +71,8 @@ namespace Touchstone_Brother_IpP
             SelectedLabel = LabelListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as TLabel;
             if (SelectedLabel != null)
             {
-                MessageBoxResult result = MessageBox.Show("print?", "print?", MessageBoxButton.YesNo);
-                if(result == MessageBoxResult.Yes)
+                var result = PMessageBox.Show("Print for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.PrintManage.Print(SelectedLabel);
                 }

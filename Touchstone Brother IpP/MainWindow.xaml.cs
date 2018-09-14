@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Forms = System.Windows.Forms;
 using Touchstone_Brother_IpP.Models;
 using Nito;
 using Nito.AsyncEx;
@@ -75,7 +76,7 @@ namespace Touchstone_Brother_IpP
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            FirebaseManage.Initialize();
+            //FirebaseManage.Initialize();
             Customer newcustomer = new Customer { Name = "steve", AllLabels = new List<TLabel> { new TLabel
             {
             Name = "steve",
@@ -96,7 +97,7 @@ namespace Touchstone_Brother_IpP
             Thread.Sleep(500);
             await FirebaseManage.RetrieveCustomers(CustomersList);
             MainView.Content = homePage;
-            PdfManage.Initialize();
+            //PdfManage.Initialize();
             labelsPage.pDFManagment = PdfManage;
         }
     }

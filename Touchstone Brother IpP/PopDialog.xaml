@@ -1,0 +1,103 @@
+﻿<Window x:Class="Touchstone_Brother_IpP.PopDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Touchstone_Brother_IpP"
+        xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Metro ="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="PopDialog" Height="450" Width="800" SizeToContent="WidthAndHeight" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF2B2B2B">
+
+
+
+
+     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel MouseDown="StackPanel_MouseDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Name="ContentTitle" Margin="7 2 0 0" Foreground="White" FontSize="14" HorizontalAlignment="Left"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" >
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Ellipse Fill="{TemplateBinding Background}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation From="#ff1414" To="#ff5900" Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation From="#ff5900" To="#ff1414" Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="PreviewMouseDown">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation From="#ff5900" To="#ffccaf" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="PreviewMouseUp">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation From="#ffccaf" To="#ff5900" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="ButtonClose" VerticalAlignment="Center" Background="Red" BorderBrush="{x:Null}" Margin="7 2 15 0" Width="12" Height="12" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Click="ButtonClose_Click"/>
+            </StackPanel>
+            </Grid>
+        </DockPanel>
+        <StackPanel Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Image x:Name="ContentImage" Width="100" Height="100"/>
+                    <TextBlock x:Name="ContentText" Margin="40 20 40 20" TextWrapping="NoWrap" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                </Grid>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ItemsControl x:Name="MessageBoxContentButtons" Margin="5 0 5 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button x:Name="ContentButton" Margin="-1 0 0 10" BorderBrush="{x:Null}" Background="#19ffffff" Content="{Binding ContentButtonText}" FontStyle="Normal" FontWeight="Normal" Width="90" Height="40" Click="ContentButton_Click"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
