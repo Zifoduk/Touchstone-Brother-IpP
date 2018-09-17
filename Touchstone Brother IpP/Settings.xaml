@@ -9,6 +9,6 @@
       Title="Settings">
 
     <Grid>
-        <TextBlock Text="Settings" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="Settings" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-56,100,145,83"/>
     </Grid>
 </Page>

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touchstone Brother IpP", "Touchstone Brother IpP\Touchstone Brother IpP.csproj", "{F57538D3-8990-4D66-A5D8-DDC20342B96A}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{6FCD61E7-2B99-4DFA-9B25-974B5AB4E949}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{F57538D3-8990-4D66-A5D8-DDC20342B96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57538D3-8990-4D66-A5D8-DDC20342B96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57538D3-8990-4D66-A5D8-DDC20342B96A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FCD61E7-2B99-4DFA-9B25-974B5AB4E949}.Debug|Any CPU.ActiveCfg = Debug
+		{6FCD61E7-2B99-4DFA-9B25-974B5AB4E949}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

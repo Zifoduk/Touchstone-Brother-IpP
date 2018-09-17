@@ -37,6 +37,18 @@
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.20" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="SideViewOpen">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="SideView">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="10"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SideViewClose">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="SideView">
+                <EasingDoubleKeyFrame KeyTime="0" Value="150"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
     <Window.Effect>
         <DropShadowEffect BlurRadius="50" Direction="360" ShadowDepth="0"/>
@@ -56,44 +68,97 @@
 
     <Grid>
         <Grid >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" x:Name="GridMenu" Width="150" HorizontalAlignment="Left" Background="#FF2C2C2C">
+            <StackPanel Grid.Column="0">
+                <Grid Height="40" VerticalAlignment="Top" Background="#FF404040">
+                    <TextBlock Text="Touchstone Ipost Label Printer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" x:Name="SideViewColumn"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0" NavigationUIVisibility="Hidden" x:Name="MainView"/>
+                    <Frame Grid.Column="1" NavigationUIVisibility="Hidden" x:Name="SideView"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <DockPanel Margin="-85 0 0 0">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin">
+                                        <EasingThicknessKeyFrame KeyTime="0" Value="-85 0 0 0"/>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="0 0 0 0"/>
+                                    </ThicknessAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin">
+                                        <EasingThicknessKeyFrame KeyTime="0" Value="0 0 0 0"/>
+                                        <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-85 0 0 0"/>
+                                    </ThicknessAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>                
+            </DockPanel.Style>
+            <Grid Grid.Column="0" x:Name="GridMenu" Width="120" HorizontalAlignment="Left" Background="#FF2C2C2C">
                 <StackPanel>
-                    <Grid Height="150" Background="Gray">
-                        <Button x:Name="ButtonCloseMenu" Width="60" Height="60" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Visible" Margin=" 5 0">
-                            <materialDesign:PackIcon Kind="ArrowLeft" Width="25" Height="25"/>
+                    <Grid Height="40" Margin="0 30 0 0">
+                        <Button x:Name="ButtonCloseMenu" Margin="0 0 0 0" Width="43" Height="30" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Visible" >
+                            <materialDesign:PackIcon Kind="ArrowLeft" Width="25" Height="25" Margin=" -5 0 -10 0"/>
                         </Button>
-                        <Button x:Name="ButtonOpenMenu" Width="60" Height="60" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed" Margin="-10 0 0 0">
-                            <materialDesign:PackIcon Kind="Menu" Width="25" Height="25" HorizontalAlignment="Left"/>
+                        <Button x:Name="ButtonOpenMenu" Margin="0 0 0 0" Width="43" Height="30" FontSize="20" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden" >
+                            <materialDesign:PackIcon Kind="Menu" Width="25" Height="25" Margin=" -5 0 -10 0"/>
                         </Button>
                     </Grid>
-                    <ListView Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListViewItem Height="60" Name="Home">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Home" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Home" VerticalAlignment="Center" Margin="20 10"/>
-                            </StackPanel>
+                    <ListView Foreground="White" Margin="0 10 0 0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListViewItem Height="40" Margin="0 10 0 10" Name="Home" HorizontalAlignment="Right">
+                            <Grid HorizontalAlignment="Right">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Home" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="Home" Width="25" Height="25" VerticalAlignment="Center"/>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem Height="60" Name="Labels">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FileDocument" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Local Labels" VerticalAlignment="Center" Margin="20 10"/>
-                            </StackPanel>
+                        <ListViewItem Height="40" Name="Labels" Margin="0 10 0 10" HorizontalAlignment="Right">
+                            <Grid HorizontalAlignment="Right">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Local Labels" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="FileDocument" Width="25" Height="25" VerticalAlignment="Center"/>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem Height="60" Name="Customers">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Customers" VerticalAlignment="Center" Margin="20 10"/>
-                            </StackPanel>
+                        <ListViewItem Height="40" Name="Customers" Margin="0 10 0 10" HorizontalAlignment="Right">
+                            <Grid HorizontalAlignment="Right">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Customers" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="Account" Width="25" Height="25" VerticalAlignment="Center"/>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem Height="60" Name="Settings">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Settings" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Text="Settings" VerticalAlignment="Center" Margin="20 10"/>
-                            </StackPanel>
+                        <ListViewItem Height="40" Name="Settings" Margin="0 10 0 10" HorizontalAlignment="Right">
+                            <Grid HorizontalAlignment="Right">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Settings" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="Settings" Width="25" Height="25" VerticalAlignment="Center"/>
+                            </Grid>
                         </ListViewItem>
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -103,13 +168,7 @@
                     </ListView>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Column="1">
-                <Grid Height="40" VerticalAlignment="Top" Background="#FF404040">
-                    <TextBlock Text="Touchstone Ipost Label Printer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
-                </Grid>
-                <Frame NavigationUIVisibility="Hidden" Grid.Column="1" x:Name="MainView"/>
-            </StackPanel>
-        </Grid>
+        </DockPanel>
     </Grid>
 
 

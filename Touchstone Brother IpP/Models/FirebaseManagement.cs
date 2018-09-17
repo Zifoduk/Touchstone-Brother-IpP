@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,21 +16,55 @@ namespace Touchstone_Brother_IpP.Models
         //change so authtokenasyncfactory has to be manually typed in at settings
         FirebaseClient firebase;
         private List<Customer> customers;
+        public bool IsOnline;
 
         public FirebaseManagement()
         {
             firebase = new FirebaseClient("https://touchstoneipp.firebaseio.com/", new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult("IXN3HqrEuAbzokJmi5b61ERW5jynEDBiqXtuRKj7") });
+            var CheckConnectionThread = new Thread(CheckForInternetConnection);
+            CheckConnectionThread.Start();
+        }
+
+        public void CheckForInternetConnection()
+        {
+            while (true)
+            {
+                try
+                {
+                    using (var client = new WebClient())
+                    using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    {
+                        IsOnline = true;
+                    }
+                }
+                catch
+                {
+                    IsOnline = false;
+                }
+            }
+        }
+
+        public void SaveDataOffline()
+        {
+            ///Save Retreieved Data Offline
         }
 
         public async Task RetrieveCustomers(List<Customer> customersList)
         {
-            var customers = await firebase.Child("Customers/").OrderByKey().OnceAsync<Customer>();
-            customersList.Clear();
-            foreach (var c in customers)
-            {            
-                customersList.Add(c.Object);
+            if (IsOnline)
+            {
+                var customers = await firebase.Child("Customers/").OrderByKey().OnceAsync<Customer>();
+                customersList.Clear();
+                foreach (var c in customers)
+                {
+                    customersList.Add(c.Object);
+                }
+                return;
             }
-            return;
+            else
+            {
+                /////Insert code for offline reading
+            }
         }
 
         public async void InsertCustomer(Customer customer)

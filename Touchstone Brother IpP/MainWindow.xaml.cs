@@ -18,6 +18,7 @@ using Forms = System.Windows.Forms;
 using Touchstone_Brother_IpP.Models;
 using Nito;
 using Nito.AsyncEx;
+using System.Windows.Media.Animation;
 
 namespace Touchstone_Brother_IpP
 {
@@ -61,7 +62,18 @@ namespace Touchstone_Brother_IpP
         }
         public void SettingsPage()
         {
-            MainView.Content = settingsPage;
+            if(SideView.Content != settingsPage)
+            {
+                SideView.Content = settingsPage;
+                Storyboard sb = this.FindResource("SideViewOpen") as Storyboard;
+                sb.Begin();
+            }
+            else
+            {
+                SideView.Content = null;
+                Storyboard sb = this.FindResource("SideViewClose") as Storyboard;
+                sb.Begin();
+            }
         }
         public void LabelsPage()
         {
