@@ -97,6 +97,11 @@ namespace Touchstone_Brother_IpP
                 pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.DeliveryDate).ToList();
                 pDFManagment.PushToList();
             }
+            if (button.Name == "ButtonSortConsignment")
+            {
+                pDFManagment.SourceLabels = pDFManagment.SourceLabels.OrderBy(o => o.ConsignmentNumber).ToList();
+                pDFManagment.PushToList();
+            }
         }
 
         private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
@@ -106,7 +111,7 @@ namespace Touchstone_Brother_IpP
             pDFManagment.PushToList();
         }
 
-        private void ButtonAddCustomer_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddDatabase_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var ParentItem = FindControlParent(button, typeof(ListViewItem)) as ListViewItem;
@@ -117,13 +122,8 @@ namespace Touchstone_Brother_IpP
                 newCustomer.Name = SelectedLabel.Name;
                 newCustomer.AllLabels = new List<TLabel>();
                 newCustomer.AllLabels.Add(SelectedLabel);
-                MainWindow.FirebaseManage.InsertCustomer(newCustomer);
+                MainWindow.FirebaseManage.InsertCustomer(newCustomer, MainWindow.customersPage.CustomersList);
             }
-        }
-
-        private void ButtonAddDatabase_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

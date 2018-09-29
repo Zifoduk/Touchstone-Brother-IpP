@@ -87,7 +87,7 @@ namespace Touchstone_Brother_IpP.Models
                         {
                             error = 3465;
                             document.Close();
-                            var result = PMessageBox.Show("Error: e" + error + "No Brother printer connected" + ": refer wiki > e" + error,
+                            var result = PMessageBox.Show("Error: e" + error + "No media installed in connected printer" + ": refer wiki > e" + error,
                                 "Check Printers", MessageBoxButtons.RetryCancel);
                             if (result == DialogResult.Retry)
                                 return ToPrint.Retry;

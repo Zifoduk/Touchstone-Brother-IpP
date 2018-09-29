@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Touchstone_Brother_IpP"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      Width="1080" Height="520"
       Title="Labels">
 
     <Grid>
@@ -15,9 +15,9 @@
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="#5D5D5D">
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="ButtonRefresh" Click="ButtonRefresh_Click" Width="40" Height="40" HorizontalAlignment="Left" Margin="17 0 0 0" BorderBrush="{x:Null}" Background="#00adff">
+        <Grid Grid.Row="0" Background="#5D5D5D" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="ButtonRefresh" Click="ButtonRefresh_Click" Width="40" Height="40" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="#00adff">
                     <materialDesign:PackIcon Kind="Refresh" HorizontalAlignment="Left" Width="25" Height="25" Margin="-10 0 -10 0"/>
                 </Button>
                 <Button x:Name="ButtonPrintAll" Width="130" Height="40" HorizontalAlignment="Left" Margin="25 0 0 0" BorderBrush="{x:Null}" Background="#00adff">
@@ -28,15 +28,15 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Background="#ffcc00" >
+        <Grid Grid.Row="1" Background="#ffcc00">
             <StackPanel   Orientation="Horizontal">
-                <Button VerticalAlignment="Center" Height="50" Margin="157
- 0 0 0" x:Name="ButtonSortName" Click="ButtonSort_Click" Width="110" Content="Name" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
-                <Button VerticalAlignment="Center" Height="50" Margin="15 0 0 0" x:Name="ButtonSortPostCode" Click="ButtonSort_Click" Width="170" Content="Postcode" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
-                <Button VerticalAlignment="Center" Height="50" Margin="150 0 0 0" x:Name="ButtonSortDeliveryDate" Click="ButtonSort_Click" Width="190" Content="Collection Date" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="190 0 0 0" x:Name="ButtonSortName" Click="ButtonSort_Click" Width="110" Content="Name" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="75 0 0 0" x:Name="ButtonSortPostCode" Click="ButtonSort_Click" Width="150" Content="Postcode" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="25 0 0 0" x:Name="ButtonSortConsignment" Click="ButtonSort_Click" Width="180" Content="Consignment Number" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
+                <Button VerticalAlignment="Center" Height="50" Margin="15 0 0 0" x:Name="ButtonSortDeliveryDate" Click="ButtonSort_Click" Width="190" Content="Collection Date" Foreground="Black" Background="#dbaf00" BorderBrush="{x:Null}"/>
             </StackPanel>
         </Grid>
-        <ListView Grid.Row="2" Margin="10" Name="LabelListView" SelectedItem="{Binding SelectedLabel, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+        <ListView Grid.Row="2" Width="1010" Height="400" HorizontalAlignment="Left" Margin="35 0 0 0" Name="LabelListView" SelectedItem="{Binding SelectedLabel, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Getvalue" Click="RMenuItem_Click"/>
@@ -46,7 +46,7 @@
                 <DataTemplate>
                     <StackPanel>
                         <WrapPanel>
-                            <Grid>
+                            <Grid Margin="0 0 0 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="70"/>
@@ -73,9 +73,9 @@
                                 <WrapPanel Grid.Column="2">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="120"/>
-                                            <ColumnDefinition Width="150"/>
-                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="180"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0" Margin="0 20 0 0">
@@ -90,7 +90,13 @@
                                             <Run Text="{Binding PostCode}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="2" Margin="0 20 0 0">
+                                        <StackPanel Grid.Column="2" Margin="20 20 0 0">
+                                            <TextBlock>
+                                            <Run Text="Consignment Number:  "/>
+                                            </TextBlock>
+                                            <TextBlock>
+                                            <Run Text="{Binding ConsignmentNumber}" FontWeight="Bold"/>
+                                            </TextBlock>
                                             <TextBlock>
                                             <Run Text="Parcel Number: "/>
                                             <Run Text="{Binding ParcelNumber}" FontWeight="Bold"/>
@@ -100,7 +106,7 @@
                                             <Run Text="{Binding ParcelSize}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="3" Margin="0 20 0 0">
+                                        <StackPanel Grid.Column="3" Margin="20 20 0 0">
                                             <TextBlock>
                                             <Run Text="Collection Date: "/>
                                             <Run Text="{Binding DeliveryDate}" FontWeight="Bold"/>
