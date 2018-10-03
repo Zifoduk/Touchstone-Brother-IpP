@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,6 +22,7 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class Customers : Page
     {
+        public List<Customer> CustomersList = new List<Customer>();
         public Customers()
         {
             InitializeComponent();
@@ -41,11 +43,37 @@ namespace Touchstone_Brother_IpP
             }
         }
 
-        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            var newCustomerList = new List<Customer>();
-            await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList);
-            MainWindow.FirebaseManage.PushtoListView(newCustomerList);
+            RetrieveCustomers();
+        }
+
+        public async void RetrieveCustomers()
+        {
+            if (MainWindow.startup)
+            {
+                var newCustomerList = new List<Customer>();
+                await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, true);
+                CustomersList = newCustomerList;
+                PushtoListView(CustomersList);
+            }
+            else
+            {
+                var newCustomerList = new List<Customer>();
+                await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, false);
+                foreach(var cust in newCustomerList)
+                {
+                    cust.AllLabels = cust.AllLabels.OrderBy(i => i.DeliveryDate).ThenBy(i => i.ConsignmentNumber).ToList();
+                }
+                CustomersList = newCustomerList;
+                PushtoListView(CustomersList);
+            }
+            
+        }
+
+        public void PushtoListView (List<Customer> customerList)
+        {
+            CustomerListView.ItemsSource = customerList;
         }
     }
 }

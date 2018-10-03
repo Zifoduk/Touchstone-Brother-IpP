@@ -27,15 +27,15 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static List<Customer> CustomersList = new List<Customer>();
-
         public static Home homePage = new Home();
         public static Settings settingsPage = new Settings();
         public static Labels labelsPage = new Labels();
-        public static Customers customers = new Customers();
+        public static Customers customersPage = new Customers();
         public static PDFManagment PdfManage = new PDFManagment();
         public static PrintManagement PrintManage = new PrintManagement();
         public static FirebaseManagement FirebaseManage = new FirebaseManagement();
+
+        public static bool startup;
 
         public MainWindow()
         {
@@ -62,7 +62,7 @@ namespace Touchstone_Brother_IpP
         }
         public void SettingsPage()
         {
-            if(SideView.Content != settingsPage)
+            /*if(SideView.Content != settingsPage)
             {
                 SideView.Content = settingsPage;
                 Storyboard sb = this.FindResource("SideViewOpen") as Storyboard;
@@ -73,7 +73,27 @@ namespace Touchstone_Brother_IpP
                 SideView.Content = null;
                 Storyboard sb = this.FindResource("SideViewClose") as Storyboard;
                 sb.Begin();
-            }
+            }*/
+            Customer newcustomer = new Customer
+            {
+                Name = "steve",
+                AllLabels = new List<TLabel> { new TLabel
+            {
+            Name = "steve",
+            Address = "cxds",
+            Barcode = "456412313",
+            DeliveryDate = "qweqwqe",
+            ConsignmentNumber = "987561",
+            PostCode = "SLLSA12",
+            Telephone = "31288312929",
+            Location =  "that place",
+            LocationNumber = "8",
+            ParcelNumber = "001",
+            ParcelSize = "s",
+            Weight = "not enough"
+            } }
+            };
+            FirebaseManage.InsertCustomer(newcustomer, customersPage.CustomersList);
         }
         public void LabelsPage()
         {
@@ -82,35 +102,40 @@ namespace Touchstone_Brother_IpP
         }
         public void CustomersPage()
         {
-            MainView.Content = customers;
-            FirebaseManage.PushtoListView(CustomersList);
+            MainView.Content = customersPage;
+            customersPage.RetrieveCustomers();
         }
+        
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //FirebaseManage.Initialize();
-            Customer newcustomer = new Customer { Name = "steve", AllLabels = new List<TLabel> { new TLabel
-            {
-            Name = "steve",
-            Address = "cxds",
-            Barcode = "898805",
-            DeliveryDate = "sunday",
-            ConsignmentNumber = "8974605",
-            PostCode = "SLLSA12",
-            Telephone = "31288312929",
-            Location =  "that place",
-            LocationNumber = "8",
-            ParcelNumber = "001", 
-            ParcelSize = "s",
-            Weight = "not enough"
-            } } };
+            startup = true;
             //Task task = new Task(() => FirebaseManage.InsertCustomer(newcustomer));
-            FirebaseManage.InsertCustomer(newcustomer);
-            Thread.Sleep(500);
-            await FirebaseManage.RetrieveCustomers(CustomersList);
+            customersPage.RetrieveCustomers();
             MainView.Content = homePage;
             //PdfManage.Initialize();
             labelsPage.pDFManagment = PdfManage;
+            startup = false;
+        }
+
+        private void RightSideViewOpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            Button obtn = (Button)this.FindName("RightSideViewCloseButton") as Button;
+            Storyboard myStoryboard = btn.TryFindResource("RightSideViewOpen") as Storyboard;
+            myStoryboard.Begin(btn);
+            btn.Visibility = Visibility.Collapsed;
+            obtn.Visibility = Visibility.Visible;
+        }
+
+        private void RightSideViewCloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            Button obtn = (Button)this.FindName("RightSideViewOpenButton") as Button;
+            Storyboard myStoryboard = btn.TryFindResource("RightSideViewClose") as Storyboard;
+            myStoryboard.Begin(btn);
+            btn.Visibility = Visibility.Collapsed;
+            obtn.Visibility = Visibility.Visible;
         }
     }
 }

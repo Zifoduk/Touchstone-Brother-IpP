@@ -15,7 +15,6 @@ namespace Touchstone_Brother_IpP.Models
     {
         //change so authtokenasyncfactory has to be manually typed in at settings
         FirebaseClient firebase;
-        private List<Customer> customers;
         public bool IsOnline;
 
         public FirebaseManagement()
@@ -49,17 +48,26 @@ namespace Touchstone_Brother_IpP.Models
             ///Save Retreieved Data Offline
         }
 
-        public async Task RetrieveCustomers(List<Customer> customersList)
+        public async Task RetrieveCustomers(List<Customer> customersList, bool test)
         {
             if (IsOnline)
             {
-                var customers = await firebase.Child("Customers/").OrderByKey().OnceAsync<Customer>();
-                customersList.Clear();
-                foreach (var c in customers)
+                if (test)
                 {
-                    customersList.Add(c.Object);
+                    var customers = await firebase.Child("Customers/").OrderByKey().OnceAsync<Customer>();
+                    Console.WriteLine(customers);
+                    return;
                 }
-                return;
+                else
+                {
+                    var customers = await firebase.Child("Customers/").OrderByKey().OnceAsync<Customer>();
+                    customersList.Clear();
+                    foreach (var c in customers)
+                    {
+                        customersList.Add(c.Object);
+                    }
+                    return;
+                }
             }
             else
             {
@@ -67,28 +75,34 @@ namespace Touchstone_Brother_IpP.Models
             }
         }
 
-        public async void InsertCustomer(Customer customer)
+        public async void InsertCustomer(Customer customer, List<Customer> customersList)
         {
-            await firebase.Child("Customers/").Child(customer.Name).PutAsync(customer);
+            if(customersList.Exists(c => c.Name == customer.Name))
+            {
+                foreach (var l in customer.AllLabels)
+                    InsertLabel(l, customersList);
+                MainWindow.customersPage.RetrieveCustomers();
+            }
+            else
+            {
+                await firebase.Child("Customers/").Child(customer.Name).PutAsync(customer);
+                MainWindow.customersPage.RetrieveCustomers();
+            }
             Thread.Sleep(1000);
             return;
         }
 
         public async void InsertLabel(TLabel inLabel, List<Customer> customersList)
         {
-            var index = customersList.FindIndex(c => c.Name == inLabel.Name);
+            int index = customersList.FindIndex(c => c.Name == inLabel.Name);
+            int indexLabel = customersList[index].AllLabels.Count;
             if (index < 0)
                 return;
             else
             {
                 var name = customersList[index].Name;
-                await firebase.Child("Customers/").Child(inLabel.Name).PostAsync(inLabel);
+                await firebase.Child("Customers/").Child(inLabel.Name).Child("AllLabels").Child(indexLabel.ToString()).PutAsync(inLabel);
             }
-        }
-
-        public void PushtoListView(List<Customer> customerList)
-        {
-            MainWindow.customers.CustomerListView.ItemsSource = customerList;
         }
     }
 

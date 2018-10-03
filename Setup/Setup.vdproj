@@ -6388,9 +6388,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Setup"
+        "ProductName" = "8:Touchstone IPP"
         "ProductCode" = "8:{77936D60-89E1-4F18-81F9-CB87FD82A7F8}"
-        "PackageCode" = "8:{62856969-C5D3-49D3-8BDC-613A68DA10A0}"
+        "PackageCode" = "8:{4D3299E5-9AB6-47B3-9A1D-A2D971525046}"
         "UpgradeCode" = "8:{EFF3A74E-508E-45CD-BF29-CB65AD0CAB5A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
