@@ -6,17 +6,23 @@
         xmlns:local="clr-namespace:Touchstone_Brother_IpP"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="590" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" Loaded="MainWindow_Loaded" WindowStyle="ThreeDBorderWindow">
+        Title="MainWindow" Height="590" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" Loaded="MainWindow_Loaded" WindowStyle="ThreeDBorderWindow" Closing="Window_Closing">
 
     <Window.Effect>
         <DropShadowEffect BlurRadius="50" Direction="360" ShadowDepth="0"/>
     </Window.Effect>
-    
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
 
     <StackPanel>
         <Grid Height="40" VerticalAlignment="Top" Background="#FF404040">
             <TextBlock Text="Touchstone Ipost Label Printer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="IsOnline" HorizontalAlignment="Left"/>
+                <Ellipse x:Name="IsOnlineEllipse" HorizontalAlignment="Left" Margin="5 2 0 0" Width="10" VerticalAlignment="Top" Height="10" Fill="Aqua"/>
+            </StackPanel>
         </Grid>
         <Grid Height="532">
             <Grid HorizontalAlignment="Left" Width="1080" Margin="0 0 0 0" VerticalAlignment="Top">
@@ -55,7 +61,7 @@
                 </DockPanel.Style>
                 <Grid Grid.Column="0" x:Name="GridMenu" Width="120" HorizontalAlignment="Left" Background="#FF2C2C2C">
                     <StackPanel Margin="0 0 0 0">
-                        <ListView Foreground="White" Margin="0 40 0 0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView x:Name="MenuListView" Foreground="White" Margin="0 40 0 0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListViewItem Height="40" Margin="0 10 0 10" Name="Home" HorizontalAlignment="Right">
                                 <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
                                     <Grid HorizontalAlignment="Right">
@@ -89,6 +95,30 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="Customers" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="Account" Width="25" Height="25" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DockPanel>
+                            </ListViewItem>
+                            <ListViewItem Name="d_Add_Steve" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right">
+                                <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
+                                    <Grid HorizontalAlignment="Right">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="35"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="d: Add Steve" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="PlusBox" Width="25" Height="25" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DockPanel>
+                            </ListViewItem>
+                            <ListViewItem Name="d_Add_Steve_Label" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right">
+                                <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
+                                    <Grid HorizontalAlignment="Right">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="35"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="d: Add Steve" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="PlusCircle" Width="25" Height="25" VerticalAlignment="Center"/>
                                     </Grid>
                                 </DockPanel>
                             </ListViewItem>
@@ -127,13 +157,13 @@
                         <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 5 0 0"/>
                         <Line X1="130" Y1="0" X2="0" Y2="0" Stroke="White" StrokeThickness="1"/>
                         <ListView>
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListViewItem>
-                            
+                            <ListViewItem x:Name="SettingsEnableDebugListViewItem" PreviewMouseLeftButtonUp="SettingsEnableDebugListViewItem_PreviewMouseLeftButtonUp">
+                                <Grid>                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox x:Name="SettingsEnableDebugCheckbox" Background="White" IsHitTestVisible="False"/>
+                                        <TextBlock Text="Debugging mode" Foreground="White"/>
+                                    </StackPanel>
+                                </Grid>
                             </ListViewItem>
                         </ListView>
                     </StackPanel>
@@ -141,6 +171,4 @@
             </DockPanel>
         </Grid>
     </StackPanel>
-
-
 </Window>

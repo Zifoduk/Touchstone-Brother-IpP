@@ -30,8 +30,8 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="540"/>
-                <ColumnDefinition Width="540"/>
+                <ColumnDefinition Width="520"/>
+                <ColumnDefinition Width="520"/>
             </Grid.ColumnDefinitions>
             <ListView Grid.Column="0" Margin="35 0 0 0" Width="1010" HorizontalAlignment="Left" Name="CustomerListView" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
             <ListView.ItemTemplate>
@@ -59,20 +59,6 @@
                                             <Run Text="Labels: "/>
                                             <Run Text="{Binding Path=AllLabels.Count, Mode=OneWay}" FontWeight="Bold"/>
                                             </TextBlock>
-                                            <ListView x:Name="LabelsListThing" ItemsSource="{Binding AllLabels}" HorizontalAlignment="Left" Width="800" ScrollViewer.CanContentScroll="False">
-                                                <ListView.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel Orientation="Horizontal" Margin="-5"/>
-                                                    </ItemsPanelTemplate>
-                                                </ListView.ItemsPanel>
-                                                <ListView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Width="Auto" Height="40">
-                                                            <Button Content="{Binding DeliveryDate}" Width="Auto" Height="35" Foreground="Black" Background="#0f000000" BorderBrush="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ListView.ItemTemplate>
-                                            </ListView>
                                         </StackPanel>
                                     </Grid>
                                 </WrapPanel>
@@ -82,14 +68,144 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <!--ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="IsHitTestVisible" Value="False"/>
-                </Style>
-            </-->
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="PreviewMouseLeftButtonUp" Handler="CustomerListView_PreviewMouseLeftButtonUp"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
         </ListView>
             <DockPanel Grid.Column="1" Background="#5D5D5D">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Background="#3D3D3D">
+                        <ListView>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 5 0 5" Width="20" Height="20" Background="Blue"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <ListView x:Name="ViewLabelsList" HorizontalAlignment="Left" Width="500"  Height="70" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="-5"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="Auto" Height="40" Margin="0 0 0 0">
+                                            <Button Content="{Binding DeliveryDate}" Margin="5 0 5 0" Width="120" Height="35" Foreground="Black" Background="White" BorderBrush="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ViewLabelButton_Click"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListViewItem}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                            <Grid Margin=" 0 15 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Grid Margin="20 0 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Delivery Date:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewDeliveryDate" Text="--/--/----" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Name:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewName" Text="Customer Name" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0" Height="Auto" Width="180" HorizontalAlignment="Left">
+                                        <TextBlock Text="Address:" FontWeight="Bold"/>
+                                        <TextBlock x:Name="ViewAddress" Margin="60 0 0 0" Text="Address line 1, Address Line 2, Address Line 3" TextWrapping="WrapWithOverflow"/>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Postcode" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewPostcode" Text="Char25" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Telephone" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewTelephone" Text="Char25" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Consignment Number:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewConsignmentNumber" Text="Char100" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Barcode:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewBarcode" Text="Char100" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Location:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewLocation" Text="Location Name" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Location Number:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewLocationNumber" Text="int" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Parcel Number:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewParcelNumber" Text="int" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Parcel Size:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewParcelSize" Text="Char25" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Weight:" FontWeight="Bold"/>
+                                            <TextBlock x:Name="ViewWeight" Text="Char100" Margin="10 0 0 0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <Button x:Name="ButtonPrint" Width="100" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 50" BorderBrush="{x:Null}" Background="#00adff" Click="ViewPrintButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Printer" VerticalAlignment="Center" Margin="0 2 0 0"/>
+                                <TextBlock Text="PRINT " VerticalAlignment="Center" Margin="10 0 0 0"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
             </DockPanel>
         </Grid>
     </Grid>

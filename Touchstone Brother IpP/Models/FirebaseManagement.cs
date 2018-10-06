@@ -5,9 +5,11 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Database.Streaming;
+using System.Windows.Media;
 
 namespace Touchstone_Brother_IpP.Models
 {
@@ -16,6 +18,7 @@ namespace Touchstone_Brother_IpP.Models
         //change so authtokenasyncfactory has to be manually typed in at settings
         FirebaseClient firebase;
         public bool IsOnline;
+        public MainWindow _MainWindow;
 
         public FirebaseManagement()
         {
@@ -24,6 +27,7 @@ namespace Touchstone_Brother_IpP.Models
             CheckConnectionThread.Start();
         }
 
+        bool previousIsOnline = false;
         public void CheckForInternetConnection()
         {
             while (true)
@@ -33,13 +37,32 @@ namespace Touchstone_Brother_IpP.Models
                     using (var client = new WebClient())
                     using (client.OpenRead("http://clients3.google.com/generate_204"))
                     {
-                        IsOnline = true;
+                        if (!previousIsOnline)
+                        {
+                            IsOnline = true;
+                        }
                     }
                 }
                 catch
                 {
-                    IsOnline = false;
+                    if (previousIsOnline)
+                    {
+                        IsOnline = false;
+                    }
                 }
+
+                if (_MainWindow.IsOnlineEllipse != null)
+                    if(IsOnline && !previousIsOnline)
+                    {
+                        _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Green));
+                        previousIsOnline = true;
+                    }
+                    else if (!IsOnline && previousIsOnline)
+                    {
+                        _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Red));
+                        previousIsOnline = false;
+                    }
+                Thread.Sleep(100);
             }
         }
 

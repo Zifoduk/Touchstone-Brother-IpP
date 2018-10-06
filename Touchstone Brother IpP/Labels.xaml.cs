@@ -52,7 +52,7 @@ namespace Touchstone_Brother_IpP
 
         }
 
-        public static DependencyObject FindControlParent(DependencyObject dependency, Type type)
+        private static DependencyObject FindControlParent(DependencyObject dependency, Type type)
         {
             DependencyObject parent = dependency;
             while((parent = VisualTreeHelper.GetParent(parent)) != null)
