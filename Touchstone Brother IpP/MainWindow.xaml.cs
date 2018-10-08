@@ -19,6 +19,8 @@ using Touchstone_Brother_IpP.Models;
 using Nito;
 using Nito.AsyncEx;
 using System.Windows.Media.Animation;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Touchstone_Brother_IpP
 {
@@ -27,8 +29,34 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class MainWindow : Window
     {
+    
+        public class MainWindowViewModel : DebugViewModel
+        {
+            private bool _Debug;
+            public bool Debug
+            {
+                get { return _Debug; }
+                set
+                {
+                    _Debug = value;
+                    OnPropertyChanged("Debug");
+                }
+            }
+        }
+        public MainWindowViewModel ViewModel = new MainWindowViewModel();
 
-        public Visibility DebuggingModeVisibility = Visibility.Collapsed;
+        private bool _Debug;
+        public bool DebuggingMode
+        {
+            get { return _Debug; }
+            private set
+            {
+                _Debug = value;
+                ViewModel.Debug = value;                
+            }
+        }
+
+
         public static Home homePage = new Home();
         public static Labels labelsPage = new Labels();
         public static Customers customersPage = new Customers();
@@ -41,9 +69,9 @@ namespace Touchstone_Brother_IpP
         public MainWindow()
         {
             InitializeComponent();
-            d_Add_Steve.Visibility = DebuggingModeVisibility;
-            d_Add_Steve_Label.Visibility = DebuggingModeVisibility;
             FirebaseManage._MainWindow = this;
+            MainView.DataContext = this;
+            DebuggingMode = true;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -116,15 +144,13 @@ namespace Touchstone_Brother_IpP
                 if (SettingsEnableDebugCheckbox.IsChecked == true)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = false;
-                    DebuggingModeVisibility = Visibility.Collapsed;
+                    DebuggingMode = false;
                 }
                 else if (SettingsEnableDebugCheckbox.IsChecked == false)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = true;
-                    DebuggingModeVisibility = Visibility.Visible;
+                    DebuggingMode = true;
                 }
-            d_Add_Steve.Visibility = DebuggingModeVisibility;
-            d_Add_Steve_Label.Visibility = DebuggingModeVisibility;
         }
 
         public void d_Add_StevePage()
@@ -201,6 +227,30 @@ namespace Touchstone_Brother_IpP
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Environment.Exit(0);
+        }
+    }
+
+
+
+    public abstract class DebugViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            VerifyPropertyName(propertyName);
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        [Conditional("DEBUG")]
+        private void VerifyPropertyName(string propertyName)
+        {
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
+                throw new ArgumentNullException(GetType().Name + " does not contain property: " + propertyName);
         }
     }
 }

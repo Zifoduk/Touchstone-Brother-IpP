@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Touchstone_Brother_IpP"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        x:Name="_this"
         Title="MainWindow" Height="590" Width="1080" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" Loaded="MainWindow_Loaded" WindowStyle="ThreeDBorderWindow" Closing="Window_Closing">
 
     <Window.Effect>
@@ -13,8 +14,9 @@
     </Window.Effect>
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
     </Window.Resources>
+
 
     <StackPanel>
         <Grid Height="40" VerticalAlignment="Top" Background="#FF404040">
@@ -27,7 +29,7 @@
         <Grid Height="532">
             <Grid HorizontalAlignment="Left" Width="1080" Margin="0 0 0 0" VerticalAlignment="Top">
                 <StackPanel Grid.Column="0" Height="520" VerticalAlignment="Top">
-                    <Frame NavigationUIVisibility="Hidden" x:Name="MainView" Height="510" VerticalAlignment="Top"/>
+                    <Frame NavigationUIVisibility="Hidden" x:Name="MainView" Height="510" VerticalAlignment="Top" Visibility="{Binding DebuggingMode, Converter={StaticResource BoolToVisConv}}"/>
                 </StackPanel>
             </Grid>
             <DockPanel Margin="-85 0 0 0" Opacity="1" >
@@ -98,7 +100,7 @@
                                     </Grid>
                                 </DockPanel>
                             </ListViewItem>
-                            <ListViewItem Name="d_Add_Steve" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right">
+                            <ListViewItem Name="d_Add_Steve" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" Visibility="{Binding DebuggingMode, Converter={StaticResource BoolToVisConv}}">
                                 <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
@@ -110,7 +112,7 @@
                                     </Grid>
                                 </DockPanel>
                             </ListViewItem>
-                            <ListViewItem Name="d_Add_Steve_Label" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right">
+                            <ListViewItem Name="d_Add_Steve_Label" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" Visibility="{Binding DebuggingMode, Converter={StaticResource BoolToVisConv}}">
                                 <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
@@ -170,7 +172,7 @@
                                     <TextBlock Margin="40 0 0 0" Text="Login" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
                                 </Grid>
                             </ListViewItem>
-                            <ListViewItem Margin="0 1 0 0" Background="LightBlue">
+                            <ListViewItem Margin="0 1 0 0" Background="LightBlue" Visibility="{Binding Path=IsLogged, Converter={StaticResource  BoolToVisConv}}">
                                 <Grid>
                                     <TextBlock Margin="30 0 0 0" Text="Register" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
                                 </Grid>
