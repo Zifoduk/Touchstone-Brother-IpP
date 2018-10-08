@@ -165,6 +165,16 @@
                                     </StackPanel>
                                 </Grid>
                             </ListViewItem>
+                            <ListViewItem Background="Yellow">
+                                <Grid HorizontalAlignment="Center">
+                                    <TextBlock Margin="40 0 0 0" Text="Login" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem Margin="0 1 0 0" Background="LightBlue">
+                                <Grid>
+                                    <TextBlock Margin="30 0 0 0" Text="Register" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
+                                </Grid>
+                            </ListViewItem>
                         </ListView>
                     </StackPanel>
                 </Grid>
