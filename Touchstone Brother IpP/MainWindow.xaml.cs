@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Forms = System.Windows.Forms;
 using Touchstone_Brother_IpP.Models;
+using Touchstone_Brother_IpP.Intergrated;
 using Nito;
 using Nito.AsyncEx;
 using System.Windows.Media.Animation;
@@ -30,39 +31,13 @@ namespace Touchstone_Brother_IpP
     public partial class MainWindow : Window
     {
     
-        public class MainWindowViewModel : DebugViewModel
-        {
-            private bool _Debug;
-            public bool Debug
-            {
-                get { return _Debug; }
-                set
-                {
-                    _Debug = value;
-                    OnPropertyChanged("Debug");
-                }
-            }
-        }
-        public MainWindowViewModel ViewModel = new MainWindowViewModel();
-
-        private bool _Debug;
-        public bool DebuggingMode
-        {
-            get { return _Debug; }
-            private set
-            {
-                _Debug = value;
-                ViewModel.Debug = value;                
-            }
-        }
-
-
         public static Home homePage = new Home();
         public static Labels labelsPage = new Labels();
         public static Customers customersPage = new Customers();
         public static PDFManagment PdfManage = new PDFManagment();
         public static PrintManagement PrintManage = new PrintManagement();
         public static FirebaseManagement FirebaseManage = new FirebaseManagement();
+        public MainWindowViewModel MWViewModel = new MainWindowViewModel();
 
         public static bool startup;
 
@@ -71,7 +46,7 @@ namespace Touchstone_Brother_IpP
             InitializeComponent();
             FirebaseManage._MainWindow = this;
             MainView.DataContext = this;
-            DebuggingMode = true;
+            //DebuggingMode = true;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -144,12 +119,12 @@ namespace Touchstone_Brother_IpP
                 if (SettingsEnableDebugCheckbox.IsChecked == true)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = false;
-                    DebuggingMode = false;
+                    MWViewModel.Debug = false;
                 }
                 else if (SettingsEnableDebugCheckbox.IsChecked == false)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = true;
-                    DebuggingMode = true;
+                    MWViewModel.Debug = true;
                 }
         }
 

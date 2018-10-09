@@ -20,7 +20,7 @@ using System.Collections;
 using System.Windows.Threading;
 using System.Windows.Controls;
 
-namespace Touchstone_Brother_IpP.Models
+namespace Touchstone_Brother_IpP.Intergrated
 {
 
 

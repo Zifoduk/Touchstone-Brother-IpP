@@ -12,7 +12,7 @@ using System.Collections;
 using System.Windows.Media;
 using System.Windows.Forms;
 
-namespace Touchstone_Brother_IpP.Models
+namespace Touchstone_Brother_IpP.Intergrated
 {
     public class PrintManagement
     {
@@ -113,6 +113,7 @@ namespace Touchstone_Brother_IpP.Models
             }
             catch(IndexOutOfRangeException e)
             {
+                Console.WriteLine(e);
                 error = 4261;
                 document.Close();
                 var result = PMessageBox.Show("Error: e" + error + "No Brother printer connected found" + ": refer wiki > e" + error,

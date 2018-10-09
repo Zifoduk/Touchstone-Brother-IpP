@@ -205,9 +205,10 @@
     <Compile Include="Labels.xaml.cs">
       <DependentUpon>Labels.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\FirebaseManagement.cs" />
-    <Compile Include="Models\PDFManagment.cs" />
-    <Compile Include="Models\PrintManagement.cs" />
+    <Compile Include="Intergrated\FirebaseManagement.cs" />
+    <Compile Include="Intergrated\PDFManagment.cs" />
+    <Compile Include="Intergrated\PrintManagement.cs" />
+    <Compile Include="Models\MainWindowViewModel.cs" />
     <Compile Include="PopDialog.xaml.cs">
       <DependentUpon>PopDialog.xaml</DependentUpon>
     </Compile>
@@ -291,9 +292,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Intergrated\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\Main Icon.ico" />
   </ItemGroup>

@@ -11,7 +11,7 @@ using Firebase.Database.Query;
 using Firebase.Database.Streaming;
 using System.Windows.Media;
 
-namespace Touchstone_Brother_IpP.Models
+namespace Touchstone_Brother_IpP.Intergrated
 {
     public class FirebaseManagement
     {

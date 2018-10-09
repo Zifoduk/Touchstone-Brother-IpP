@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Touchstone_Brother_IpP.Models;
+using Touchstone_Brother_IpP.Intergrated;
 
 namespace Touchstone_Brother_IpP
 {
