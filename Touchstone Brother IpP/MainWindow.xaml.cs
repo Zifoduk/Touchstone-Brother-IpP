@@ -37,7 +37,7 @@ namespace Touchstone_Brother_IpP
         public static PDFManagment PdfManage = new PDFManagment();
         public static PrintManagement PrintManage = new PrintManagement();
         public static FirebaseManagement FirebaseManage = new FirebaseManagement();
-        public MainWindowViewModel MWViewModel = new MainWindowViewModel();
+        public MainWindowViewModel MWViewModel;
 
         public static bool startup;
 
@@ -47,6 +47,10 @@ namespace Touchstone_Brother_IpP
             FirebaseManage._MainWindow = this;
             MainView.DataContext = this;
             //DebuggingMode = true;
+        }
+        public void SyncViewModel(MainWindowViewModel viewModel)
+        {
+            viewModel.isSynced = true;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -8,6 +8,7 @@ namespace Touchstone_Brother_IpP.Models
 {
     public class MainWindowViewModel : DebugViewModel
     {
+        public bool isSynced;
         private bool _Debug;
         public bool Debug
         {
@@ -22,6 +23,14 @@ namespace Touchstone_Brother_IpP.Models
         public MainWindowViewModel()
         {
             Debug = false;
+        }
+
+        public void Sync()
+        {
+            while(!isSynced)
+            {
+                
+            }
         }
     }
 }
