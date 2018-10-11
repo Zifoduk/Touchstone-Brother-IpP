@@ -17,7 +17,6 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
-        <Models:MainWindowViewModel x:Key="MWViewModel"/>
     </Window.Resources>
 
     <StackPanel>
@@ -102,7 +101,7 @@
                                     </Grid>
                                 </DockPanel>
                             </ListViewItem>
-                            <ListViewItem Name="d_Add_Steve" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" DataContext="{StaticResource MWViewModel}" Visibility="{Binding Debug, Converter={StaticResource BoolToVisConv}}">
+                            <ListViewItem Name="d_Add_Steve" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=ViewModel}" Visibility="{Binding Path=Debug, Converter={StaticResource BoolToVisConv}}">
                                 <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
@@ -114,7 +113,7 @@
                                     </Grid>
                                 </DockPanel>
                             </ListViewItem>
-                            <ListViewItem Name="d_Add_Steve_Label" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" DataContext="{Binding Path=MWViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Debug, Converter={StaticResource BoolToVisConv}}">
+                            <ListViewItem Name="d_Add_Steve_Label" Height="40" Margin="0 10 0 10" HorizontalAlignment="Right" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=ViewModel}" Visibility="{Binding Path=Debug, Converter={StaticResource BoolToVisConv}}">
                                 <DockPanel VerticalAlignment="Center" Height="40" Width="110" HorizontalAlignment="Center">
                                     <Grid HorizontalAlignment="Right">
                                         <Grid.ColumnDefinitions>
@@ -161,14 +160,6 @@
                         <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 5 0 0"/>
                         <Line X1="130" Y1="0" X2="0" Y2="0" Stroke="White" StrokeThickness="1"/>
                         <ListView>
-                            <ListViewItem x:Name="SettingsEnableDebugListViewItem" PreviewMouseLeftButtonUp="SettingsEnableDebugListViewItem_PreviewMouseLeftButtonUp">
-                                <Grid>                                    
-                                    <StackPanel Orientation="Horizontal">
-                                        <CheckBox x:Name="SettingsEnableDebugCheckbox" Background="White" IsHitTestVisible="False"/>
-                                        <TextBlock Text="Debugging mode" Foreground="White"/>
-                                    </StackPanel>
-                                </Grid>
-                            </ListViewItem>
                             <ListViewItem Background="Yellow">
                                 <Grid HorizontalAlignment="Center">
                                     <TextBlock Margin="40 0 0 0" Text="Login" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
@@ -177,6 +168,14 @@
                             <ListViewItem Margin="0 1 0 0" Background="LightBlue" Visibility="{Binding Path=IsLogged, Converter={StaticResource  BoolToVisConv}}">
                                 <Grid>
                                     <TextBlock Margin="30 0 0 0" Text="Register" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem x:Name="SettingsEnableDebugListViewItem" PreviewMouseLeftButtonUp="SettingsEnableDebugListViewItem_PreviewMouseLeftButtonUp">
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox x:Name="SettingsEnableDebugCheckbox" Background="White" IsHitTestVisible="False"/>
+                                        <TextBlock Text="Debugging mode" Foreground="White"/>
+                                    </StackPanel>
                                 </Grid>
                             </ListViewItem>
                         </ListView>

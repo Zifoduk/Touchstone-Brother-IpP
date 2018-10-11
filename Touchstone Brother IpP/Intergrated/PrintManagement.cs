@@ -16,9 +16,9 @@ namespace Touchstone_Brother_IpP.Intergrated
 {
     public class PrintManagement
     {
-        private static string DataFolder = PDFManagment.DataFolder;
-        private static string SourceFolder = PDFManagment.SourceFolder;
-        private static string TemplatesFolder = PDFManagment.CheckDir(DataFolder + @"Templates\");
+        private static string DataFolder = PDFManagement.DataFolder;
+        private static string SourceFolder = PDFManagement.SourceFolder;
+        private static string TemplatesFolder = PDFManagement.CheckDir(DataFolder + @"Templates\");
         private static string LabelLocation = FindLBXFile(TemplatesFolder, "Label.lbx");
 
         public static string FindLBXFile(string _Directory, string filename)

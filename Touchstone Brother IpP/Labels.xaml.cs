@@ -20,7 +20,7 @@ namespace Touchstone_Brother_IpP
     public partial class Labels : Page
     {
         public TLabel SelectedLabel { get; set; }
-        public PDFManagment pDFManagment;
+        public PDFManagement pDFManagment;
 
         public Labels()
         {

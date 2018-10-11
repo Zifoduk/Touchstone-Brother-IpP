@@ -30,14 +30,19 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class MainWindow : Window
     {
-    
+
+        public static PDFManagement PdfManage = App.PDFManagement;
+        public static PrintManagement PrintManage = App.PrintManagement;
+        public static FirebaseManagement FirebaseManage = App.FirebaseManagement;
+
         public static Home homePage = new Home();
         public static Labels labelsPage = new Labels();
         public static Customers customersPage = new Customers();
-        public static PDFManagment PdfManage = new PDFManagment();
-        public static PrintManagement PrintManage = new PrintManagement();
-        public static FirebaseManagement FirebaseManage = new FirebaseManagement();
-        public MainWindowViewModel MWViewModel;
+        public static MainWindowViewModel ViewModel { get; set; } = new MainWindowViewModel();
+
+        public static bool DDebug;
+
+        public bool tester = false;
 
         public static bool startup;
 
@@ -123,12 +128,14 @@ namespace Touchstone_Brother_IpP
                 if (SettingsEnableDebugCheckbox.IsChecked == true)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = false;
-                    MWViewModel.Debug = false;
+                    ViewModel.Debug = false;
+                    DDebug = false;
                 }
                 else if (SettingsEnableDebugCheckbox.IsChecked == false)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = true;
-                    MWViewModel.Debug = true;
+                    ViewModel.Debug = true;
+                    DDebug = true;
                 }
         }
 
@@ -218,11 +225,7 @@ namespace Touchstone_Brother_IpP
         public void OnPropertyChanged(string propertyName)
         {
             VerifyPropertyName(propertyName);
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if(handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         [Conditional("DEBUG")]

@@ -24,13 +24,5 @@ namespace Touchstone_Brother_IpP.Models
         {
             Debug = false;
         }
-
-        public void Sync()
-        {
-            while(!isSynced)
-            {
-                
-            }
-        }
     }
 }

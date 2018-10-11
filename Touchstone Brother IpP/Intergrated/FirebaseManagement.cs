@@ -9,6 +9,7 @@ using System.Windows;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Database.Streaming;
+using Firebase.Auth;
 using System.Windows.Media;
 
 namespace Touchstone_Brother_IpP.Intergrated
@@ -22,9 +23,9 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         public FirebaseManagement()
         {
-            firebase = new FirebaseClient("https://touchstoneipp.firebaseio.com/", new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult("IXN3HqrEuAbzokJmi5b61ERW5jynEDBiqXtuRKj7") });
-            var CheckConnectionThread = new Thread(CheckForInternetConnection);
-            CheckConnectionThread.Start();
+            
+            //var CheckConnectionThread = new Thread(CheckForInternetConnection);
+            //CheckConnectionThread.Start();
         }
 
         bool previousIsOnline = false;
@@ -51,17 +52,20 @@ namespace Touchstone_Brother_IpP.Intergrated
                     }
                 }
 
-                if (_MainWindow.IsOnlineEllipse != null)
-                    if(IsOnline && !previousIsOnline)
-                    {
-                        _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Green));
-                        previousIsOnline = true;
-                    }
-                    else if (!IsOnline && previousIsOnline)
-                    {
-                        _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Red));
-                        previousIsOnline = false;
-                    }
+                if (_MainWindow != null)
+                {
+                    if (_MainWindow.IsOnlineEllipse != null)
+                        if (IsOnline && !previousIsOnline)
+                        {
+                            _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Green));
+                            previousIsOnline = true;
+                        }
+                        else if (!IsOnline && previousIsOnline)
+                        {
+                            _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Red));
+                            previousIsOnline = false;
+                        }
+                }
                 Thread.Sleep(100);
             }
         }
@@ -70,6 +74,51 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             ///Save Retreieved Data Offline
         }
+
+        #region Connect to Firebase
+
+        public async Task<int> GetAuthorisation(string email, string password)
+        {
+            var token = "";
+            try
+            {
+                var authprovider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyAc99sNicQUibOoDsoqr1Cl56_UPIRYmU4"));
+                try
+                {
+                    var auth = await authprovider.SignInWithEmailAndPasswordAsync(email, password);
+                    Console.WriteLine(auth);
+                    token = auth.FirebaseToken;
+                    try
+                    {
+                        firebase = new FirebaseClient("https://touchstoneipp.firebaseio.com/", new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(token) });
+                        Console.WriteLine("Connected");
+                        return 1;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("connection error");
+                        return 3;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Wrong Details");
+                    //App.AccountManagement.FailedSignIn(AccountManagement.FailedReason.Credentials);
+                    return 2;
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("connection error");
+                //App.AccountManagement.FailedSignIn(AccountManagement.FailedReason.Connection);
+                return 3;
+            }
+        }
+
+        #endregion
+
+        #region Database Manipulation
 
         public async Task RetrieveCustomers(List<Customer> customersList, bool test)
         {
@@ -127,6 +176,8 @@ namespace Touchstone_Brother_IpP.Intergrated
                 await firebase.Child("Customers/").Child(inLabel.Name).Child("AllLabels").Child(indexLabel.ToString()).PutAsync(inLabel);
             }
         }
+
+        #endregion 
     }
 
     public class TLabel

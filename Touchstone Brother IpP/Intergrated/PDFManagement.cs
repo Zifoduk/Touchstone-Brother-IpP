@@ -24,7 +24,7 @@ namespace Touchstone_Brother_IpP.Intergrated
 {
 
 
-    public class PDFManagment
+    public class PDFManagement
     {
 
         public static string CheckDir(string dir)
@@ -77,7 +77,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         public ICollection<TLabel> ISourceLabels { get; set; }
 
         //=========================================================
-        public PDFManagment()
+        public PDFManagement()
         {
             Flush();
             ExtractData();
