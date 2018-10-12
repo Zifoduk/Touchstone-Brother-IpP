@@ -212,7 +212,8 @@ namespace Touchstone_Brother_IpP
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Environment.Exit(0);
+            //you gonna wanna change this to have a shutdown button
+            App.AppClose();
         }
     }
 

@@ -20,12 +20,19 @@ namespace Touchstone_Brother_IpP
         public static PDFManagement PDFManagement = new PDFManagement();
         public static PrintManagement PrintManagement = new PrintManagement();
         public static Startup startup;
+        public static MainWindow mainWindow;
 
         public static void PostLogin()
         {
             MainWindow mw = new MainWindow();
-            mw.Show();
+            mainWindow = mw;
+            mainWindow.Show();
+            startup.Close();
         }
 
+        public static void AppClose()
+        {
+            Environment.Exit(0);
+        }
     }
 }

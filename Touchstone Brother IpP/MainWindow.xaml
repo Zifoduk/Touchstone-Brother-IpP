@@ -120,7 +120,7 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="35"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="d: Add Steve" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <TextBlock Grid.Column="0" Text="d: Add LSteve " VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         <materialDesign:PackIcon Grid.Column="1" HorizontalAlignment="Right" Kind="PlusCircle" Width="25" Height="25" VerticalAlignment="Center"/>
                                     </Grid>
                                 </DockPanel>
