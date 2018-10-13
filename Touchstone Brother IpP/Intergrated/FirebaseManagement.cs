@@ -88,7 +88,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         public void CustomerSubscribedEvent(FirebaseEvent<Customer> sender)
         {
             //fix this
-            string newkey = sender.Object;
+            string newkey = sender.Key;
             if(newkey != previouskey)
                 Console.WriteLine("Update, Name" + sender.Object.Name);
             previouskey = newkey;

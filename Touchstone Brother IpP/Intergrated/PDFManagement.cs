@@ -101,34 +101,60 @@ namespace Touchstone_Brother_IpP.Intergrated
 
             Int64 Checksize = 0;
 
-
-            foreach (var file in tempPdfFiles)
+            try
             {
-                if (File.Exists(file))
-                {
-                    Checksize = new FileInfo(file).Length;
-                    if (Checksize < 100000)
+                if (tempPdfFiles.Count > 0)
+                { 
+                    foreach (var file in tempPdfFiles)
                     {
                         if (File.Exists(file))
-                            File.Delete(file);
-                        break;
-                    }
-                }
+                        {
+                            Checksize = new FileInfo(file).Length;
+                            if (Checksize < 100000)
+                            {
+                                if (File.Exists(file))
+                                    File.Delete(file);
+                                break;
+                            }
+                        }
 
-                using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (PdfReader reader = new PdfReader(fs))
-                {
-                    string[] textlines = new string[] { };
-                    var text = PdfTextExtractor.GetTextFromPage(reader, 1, new SimpleTextExtractionStrategy());
-                    textlines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var line in textlines)
-                        if (line.Contains("@ipostparcels"))
-                            pdfFiles.Add(file);
+                        using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (PdfReader reader = new PdfReader(fs))
+                        {
+                            string[] textlines = new string[] { };
+                            var text = PdfTextExtractor.GetTextFromPage(reader, 1, new SimpleTextExtractionStrategy());
+                            textlines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var line in textlines)
+                                if (line.Contains("@ipostparcels"))
+                                    pdfFiles.Add(file);
+                        }
+                    }
+                pdfFiles.ForEach(file => File.Move(file, (SourceFolder + Path.GetFileName(file))));
+
+                Archive();
                 }
             }
-            pdfFiles.ForEach(file => File.Move(file, (SourceFolder + Path.GetFileName(file))));
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
-            Archive();
         }
 
         public void Archive()
@@ -250,10 +276,20 @@ namespace Touchstone_Brother_IpP.Intergrated
         //=========================================================
         public void PushToList()
         {
-            //MainWindow.labelsPage.LabelListView.ItemsSource = SourceLabels;
-            ISourceLabels = SourceLabels.ToArray();
-            MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
-            MainWindow.labelsPage.UIUpdate();
+            try
+            {
+                ISourceLabels = SourceLabels.ToArray();
+                MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
+                MainWindow.labelsPage.UIUpdate();
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
     }
