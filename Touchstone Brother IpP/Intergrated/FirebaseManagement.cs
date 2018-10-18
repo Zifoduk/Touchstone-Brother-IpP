@@ -80,7 +80,7 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         public void SaveDataOffline()
         {
-
+            //start this
         }
 
 
@@ -88,7 +88,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         public void CustomerSubscribedEvent(FirebaseEvent<Customer> sender)
         {
             //fix this
-            string newkey = sender.Object;
+            string newkey = sender.Key;
             if(newkey != previouskey)
                 Console.WriteLine("Update, Name" + sender.Object.Name);
             previouskey = newkey;
@@ -149,6 +149,36 @@ namespace Touchstone_Brother_IpP.Intergrated
                 Console.WriteLine("connection error");
                 //App.AccountManagement.FailedSignIn(AccountManagement.FailedReason.Connection);
                 return 3;
+            }
+        }
+
+        public async Task<int> CreateUser(string email, string password, bool goodPass)
+        {
+            try
+            {
+                var auther = new FirebaseAuth();
+                var authprovider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyAc99sNicQUibOoDsoqr1Cl56_UPIRYmU4"));
+                try
+                {
+                    if (goodPass)
+                    {
+                        var auth = await authprovider.CreateUserWithEmailAndPasswordAsync(email, password, email, false);
+                        Console.WriteLine("registered");
+                        return 1;
+                    }
+                    else
+                        return 2;
+                }
+                catch (Exception e)
+                {                    
+                    Console.WriteLine("Failed to register");
+                    return 3;
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Connection Failed");
+                return 4;
             }
         }
 
