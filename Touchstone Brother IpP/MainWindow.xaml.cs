@@ -31,7 +31,7 @@ namespace Touchstone_Brother_IpP
     public partial class MainWindow : Window
     {
 
-        public static PDFManagement PdfManage = App.PDFManagement;
+        public static LocalFilesManagement PdfManage = App.LocalFilesManagement;
         public static PrintManagement PrintManage = App.PrintManagement;
         public static FirebaseManagement FirebaseManage = App.FirebaseManagement;
 
@@ -49,6 +49,11 @@ namespace Touchstone_Brother_IpP
         public MainWindow()
         {
             InitializeComponent();
+
+            PdfManage = App.LocalFilesManagement;
+            PrintManage = App.PrintManagement;
+            FirebaseManage = App.FirebaseManagement;
+
             FirebaseManage._MainWindow = this;
             MainView.DataContext = this;
             //DebuggingMode = true;
@@ -79,6 +84,7 @@ namespace Touchstone_Brother_IpP
         public void LabelsPage()
         {
             MainView.Content = labelsPage;
+            Console.WriteLine("Breakline");
             PdfManage.PushToList();
         }
         public void CustomersPage()
@@ -187,26 +193,23 @@ namespace Touchstone_Brother_IpP
         public void d_Add_Steve_LabelPage()
         {
 
-            Customer newcustomer = new Customer
+            TLabel L = new TLabel
             {
                 Name = "steve",
-                AllLabels = new List<TLabel> { new TLabel
-            {
-            Name = "steve",
-            Address = stringGenerator(25),
-            Barcode = intGenerator(20).ToString(),
-            DeliveryDate = intGenerator(8).ToString(),
-            ConsignmentNumber = intGenerator(20).ToString(),
-            PostCode = stringGenerator(7),
-            Telephone = intGenerator(11).ToString(),
-            Location =  stringGenerator(5),
-            LocationNumber = intGenerator(2).ToString(),
-            ParcelNumber = "001",
-            ParcelSize = "s",
-            Weight = "not enough"
-            } }
+                Address = stringGenerator(25),
+                Barcode = intGenerator(20).ToString(),
+                DeliveryDate = intGenerator(8).ToString(),
+                ConsignmentNumber = intGenerator(20).ToString(),
+                PostCode = stringGenerator(7),
+                Telephone = intGenerator(11).ToString(),
+                Location = stringGenerator(5),
+                LocationNumber = intGenerator(2).ToString(),
+                ParcelNumber = "001",
+                ParcelSize = "s",
+                Weight = "not enough",
+                Key = "-LiZoxIyWO0KTnahV4iy"
             };
-            FirebaseManage.InsertCustomer(newcustomer, customersPage.CustomersList);
+            FirebaseManage.InsertLabel(L);
         }
         #endregion
 

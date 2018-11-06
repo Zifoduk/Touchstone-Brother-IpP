@@ -7,6 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Height="510" HorizontalAlignment="Left" Width="1010" Margin="35 0 0 0">
-        <TextBlock Text="Welcome to Home. Click on of the tabs on the left to begin" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap"/>
+        <StackPanel>
+            <TextBlock Text="Welcome to Home. Click on of the tabs on the left to begin" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" TextWrapping="Wrap"/>
+        </StackPanel>
     </Grid>
 </UserControl>

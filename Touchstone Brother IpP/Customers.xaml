@@ -42,17 +42,21 @@
                                 <WrapPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="120"/>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Margin="20">
+                                        <StackPanel Grid.Column="0">
+                                            <Button x:Name="ButtonDelete" Width="100" Height="35" Margin="10 5 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="#ff0000" Click="DeleteCustomerButton_Click">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="DeleteVariant" VerticalAlignment="Center" Margin="0 2 0 0"/>
+                                                    <TextBlock Text="DELETE " VerticalAlignment="Center" Margin="2 0 0 0"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                         <StackPanel Grid.Column="1" Margin="20">
                                             <TextBlock Text="Name: "/>
                                             <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Margin="20">
-                                            <TextBlock Text="Key: "/>
-                                            <TextBlock Text="{Binding Key}" FontWeight="Bold" TextWrapping="Wrap"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="2" Margin="20">
                                             <TextBlock>
@@ -60,6 +64,7 @@
                                             <Run Text="{Binding Path=AllLabels.Count, Mode=OneWay}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
+
                                     </Grid>
                                 </WrapPanel>
                             </Grid>
@@ -151,6 +156,13 @@
                                             <TextBlock x:Name="ViewTelephone" Text="Char25" Margin="10 0 0 0"/>
                                         </StackPanel>
                                     </Grid>
+                                    <Grid Margin="20 10 0 0">
+                                        <StackPanel Orientation="Horizontal">
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid>
+                                        <Image x:Name="ViewQRCode" Width="145" Height="145"/>
+                                    </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
                                     <Grid Margin="20 10 0 0">
@@ -198,10 +210,16 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                        <Button x:Name="ButtonPrint" Width="100" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 50" BorderBrush="{x:Null}" Background="#00adff" Click="ViewPrintButton_Click">
+                        <Button x:Name="ButtonPrint" Width="100" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="40 0 0 50" BorderBrush="{x:Null}" Background="#00adff" Click="ViewPrintButton_Click">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Printer" VerticalAlignment="Center" Margin="0 2 0 0"/>
-                                <TextBlock Text="PRINT " VerticalAlignment="Center" Margin="10 0 0 0"/>
+                                <TextBlock Text="PRINT " VerticalAlignment="Center" Margin="5 0 0 0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ButtonDelete" Width="100" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="280 0 0 50" BorderBrush="{x:Null}" Background="#ff0000" Click="ViewDeleteButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="DeleteVariant" VerticalAlignment="Center" Margin="0 2 0 0"/>
+                                <TextBlock Text="DELETE " VerticalAlignment="Center" Margin="2 0 0 0"/>
                             </StackPanel>
                         </Button>
                     </Grid>

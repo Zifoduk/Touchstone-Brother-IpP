@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Touchstone_Brother_IpP.Intergrated;
+using Nito.AsyncEx;
 
 namespace Touchstone_Brother_IpP
 {
@@ -67,25 +68,40 @@ namespace Touchstone_Brother_IpP
 
         public async void RetrieveCustomers()
         {
-            if (MainWindow.startup)
+            try
             {
-                var newCustomerList = new List<Customer>();
-                await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, true);
-                CustomersList = newCustomerList;
-                PushtoListView(CustomersList);
-            }
-            else
-            {
-                var newCustomerList = new List<Customer>();
-                await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, false);
-                foreach(var cust in newCustomerList)
+                if (MainWindow.startup)
                 {
-                    cust.AllLabels = cust.AllLabels.OrderBy(i => i.DeliveryDate).ThenBy(i => i.ConsignmentNumber).ToList();
+                    var newCustomerList = new List<Customer>();
+                    await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, true);
+                    CustomersList = newCustomerList;
+                    PushtoListView(CustomersList);
                 }
-                CustomersList = newCustomerList;
-                PushtoListView(CustomersList);
+                else
+                {
+                    var newCustomerList = new List<Customer>();
+                    await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, false);
+                    foreach(var cust in newCustomerList)
+                    {
+                        try
+                        {
+                            cust.AllLabels = cust.AllLabels.OrderBy(i => i.DeliveryDate).ThenBy(i => i.ConsignmentNumber).ToList();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(cust.Name);
+                            Console.WriteLine(e);
+                        }
+                    }
+                    CustomersList = newCustomerList;
+                    PushtoListView(CustomersList);
+                }
             }
-            
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
         }
 
         public void PushtoListView (List<Customer> customerList)
@@ -93,14 +109,17 @@ namespace Touchstone_Brother_IpP
             CustomerListView.ItemsSource = customerList;
         }
 
-        private void CustomerListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private async void CustomerListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             item.IsSelected = true;
             if(item != null && item.IsSelected)
             {
                 var CustomerInformation = CustomerListView.ItemContainerGenerator.ItemFromContainer(item) as Customer;
-                ViewLabelsList.ItemsSource = CustomerInformation.AllLabels;
+                var CustomerLabels = await App.FirebaseManagement.RetrieveCustomerLabel(CustomerInformation.Key);
+                //ViewLabelsList.ItemsSource = CustomerInformation.AllLabels;
+                ViewLabelsList.ItemsSource = CustomerLabels;
+                ViewQRCode.Source = App.BarcodeManagement.GenerateDisplayQR(CustomerInformation.Key);
                 SelectedLabel = DefaultLabel;
                 PushToCustomerView(DefaultLabel);
             }
@@ -153,6 +172,33 @@ namespace Touchstone_Brother_IpP
                 if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.PrintManage.Print(SelectedLabel);
+                }
+            }
+        }
+
+        private void DeleteCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var ParentItem = FindControlParent(button, typeof(ListViewItem)) as ListViewItem;
+            var SelectedCustomer = CustomerListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as Customer;
+            if (SelectedCustomer != null)
+            {
+                var result = PMessageBox.Show("Delete Customer: " + SelectedCustomer.Name, "Delete Customer: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                if (result == Forms.DialogResult.Yes)
+                {
+                    MainWindow.FirebaseManage.DeleteCustomer(SelectedCustomer ,CustomersList);
+                }
+            }
+        }
+
+        private void ViewDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedLabel != null && SelectedLabel != DefaultLabel)
+            {
+                var result = PMessageBox.Show("Delete for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                if (result == Forms.DialogResult.Yes)
+                {
+                    MainWindow.FirebaseManage.DeleteLabel(SelectedLabel, CustomersList);
                 }
             }
         }

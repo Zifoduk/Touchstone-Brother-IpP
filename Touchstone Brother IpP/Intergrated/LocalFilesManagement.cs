@@ -19,12 +19,14 @@ using Path = System.IO.Path;
 using System.Collections;
 using System.Windows.Threading;
 using System.Windows.Controls;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Touchstone_Brother_IpP.Intergrated
 {
 
 
-    public class PDFManagement
+    public class LocalFilesManagement
     {
 
         public static string CheckDir(string dir)
@@ -48,6 +50,18 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         private static readonly string DownloadsFolder = KnownFolders.Downloads.Path;
         public static string DataFolder = UserRoamingDataFolder;
+        public static string TempFolder
+        {
+            get
+            {
+                var folder = UserRoamingDataFolder + @"temp\";
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+                return folder;
+            }
+        }
         public static string SourceFolder
         {
             get
@@ -77,13 +91,14 @@ namespace Touchstone_Brother_IpP.Intergrated
         public ICollection<TLabel> ISourceLabels { get; set; }
 
         //=========================================================
-        public PDFManagement()
+        public LocalFilesManagement()
         {
             Flush();
             ExtractData();
             MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
         }
 
+        #region PDF Management
         //=========================================================
         #region Flushing
 
@@ -291,6 +306,15 @@ namespace Touchstone_Brother_IpP.Intergrated
                 Console.WriteLine(e);
             }
         }
+        #endregion
+
+        #region Save and Load file
+
+        public void SaveQR(Bitmap bmp, string key)
+        {
+            bmp.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+        }
+        #endregion
 
     }
 

@@ -8,6 +8,7 @@ using System.Windows;
 using Touchstone_Brother_IpP.Models;
 using Touchstone_Brother_IpP;
 using Touchstone_Brother_IpP.Intergrated;
+using Touchstone_Brother_IpP.Properties;
 
 namespace Touchstone_Brother_IpP
 {
@@ -17,17 +18,24 @@ namespace Touchstone_Brother_IpP
     public partial class App : Application
     {
         public static FirebaseManagement FirebaseManagement = new FirebaseManagement();
-        public static PDFManagement PDFManagement = new PDFManagement();
+        public static LocalFilesManagement LocalFilesManagement = new LocalFilesManagement();
+        public static BarcodeManagement BarcodeManagement = new BarcodeManagement();
         public static PrintManagement PrintManagement = new PrintManagement();
         public static Startup startup;
         public static MainWindow mainWindow;
 
         public static void PostLogin()
         {
+            SaveData();
             MainWindow mw = new MainWindow();
             mainWindow = mw;
             mainWindow.Show();
             startup.Close();
+        }
+        
+        public static void SaveData()
+        {
+            Settings.Default.Save();
         }
 
         public static void AppClose()

@@ -169,7 +169,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     else
                         return 2;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {                    
                     Console.WriteLine("Failed to register");
                     return 3;
@@ -202,6 +202,12 @@ namespace Touchstone_Brother_IpP.Intergrated
                     customersList.Clear();
                     foreach (var c in customers)
                     {
+                        if(c.Object.AllLabels.Any(i => i == null))
+                        {
+                            c.Object.AllLabels.RemoveAll(item => item == null);
+                            await firebase.Child("Customers").Child(c.Object.Name).PutAsync(c.Object);
+                            
+                        }
                         customersList.Add(c.Object);
                     }
                     try
@@ -225,26 +231,66 @@ namespace Touchstone_Brother_IpP.Intergrated
             }
         }
 
-        public async void InsertCustomer(Customer customer, List<Customer> customersList)
+        public async Task<List<TLabel>> RetrieveCustomerLabel(string customersKey)
         {
-            if(customersList.Exists(c => c.Name == customer.Name))
+            List<TLabel> RetrievedList = new List<TLabel>();
+            try
             {
-                foreach (var l in customer.AllLabels)
-                    InsertLabel(l, customersList);
-                //MainWindow.customersPage.RetrieveCustomers();
+                if (IsOnline)
+                {
+                    var Labels = await firebase.Child("Labels").Child(customersKey).OrderByKey().OnceAsync<TLabel>();
+                    foreach (var l in Labels)
+                        RetrievedList.Add(l.Object);
+                }
+                else
+                {
+                    /////Insert code for offline reading
+                }
+                return RetrievedList;
             }
-            else
+            catch (Exception e)
             {
-                await firebase.Child("Customers/").Child(customer.Name).PutAsync(customer);
-                //MainWindow.customersPage.RetrieveCustomers();
+                Console.Write(e);
+                var t = new TLabel
+                {
+                    Name = "error",
+                    Address = "error",
+                    Barcode = "error",
+                    DeliveryDate = "error",
+                    ConsignmentNumber = "error",
+                    PostCode = "error",
+                    Telephone = "error",
+                    Location = "error",
+                    LocationNumber = "error",
+                    ParcelNumber = "error",
+                    ParcelSize = "error",
+                    Weight = "error"
+                };
+                RetrievedList.Add(t);
+                return RetrievedList;
             }
-            Thread.Sleep(1000);
-            return;
         }
 
-        public async void InsertLabel(TLabel inLabel, List<Customer> customersList)
+        private string GenerateUID()
         {
-            int index = customersList.FindIndex(c => c.Name == inLabel.Name);
+            Guid guid = Guid.NewGuid();
+            ShortGuid UID = guid;
+            Console.WriteLine("ShortGUID GUID: " + UID.Guid);
+            Console.WriteLine("ShortGUID Value: " + UID.Value);
+            return "-" + UID;
+        }
+        public async void InsertCustomer(Customer customer, List<Customer> customersList)
+        {
+            string customerUID = GenerateUID();
+            customer.Key = customerUID;
+            await firebase.Child("Customers/").Child(customerUID).PutAsync(customer);
+            Thread.Sleep(1000);
+            MainWindow.customersPage.RetrieveCustomers();
+        }
+
+        public async void InsertLabel(TLabel inLabel/*, List<Customer> customersList*/)
+        {
+            /*int index = customersList.FindIndex(c => c.Name == inLabel.Name);
             int indexLabel = customersList[index].AllLabels.Count;
             if (index < 0)
                 return;
@@ -252,6 +298,53 @@ namespace Touchstone_Brother_IpP.Intergrated
             {
                 var name = customersList[index].Name;
                 await firebase.Child("Customers/").Child(inLabel.Name).Child("AllLabels").Child(indexLabel.ToString()).PutAsync(inLabel);
+            }*/
+
+            await firebase.Child("Labels").Child(inLabel.Key).PostAsync(inLabel, true);
+        }
+        public async void DeleteLabel(TLabel inLabel, List<Customer> customersList)
+        {
+            try
+            {
+                int index = customersList.FindIndex(c => c.Name == inLabel.Name);
+                int indexLabel = customersList[index].AllLabels.FindIndex(l => l.Barcode == inLabel.Barcode);
+                if (index < 0)
+                    return;
+                else
+                {
+                    var name = customersList[index].Name;
+                    customersList[index].AllLabels.RemoveAt(indexLabel);
+                    customersList[index].AllLabels.RemoveAll(item => item == null);
+                    await firebase.Child("Customers").Child(name).PutAsync(customersList[index]);
+                    MainWindow.customersPage.RetrieveCustomers();
+                }
+            }
+            catch (Exception e)
+            {
+                var result = PMessageBox.Show("Failed to delete label for " + inLabel.Name + "\n\r Expection: " + e, "Failed to delete label for" + inLabel.Name, System.Windows.Forms.MessageBoxButtons.OK);
+                Console.WriteLine(e);
+            }
+        }
+
+        public async void DeleteCustomer(Customer inCustomer, List<Customer> customersList)
+        {
+            try
+            {
+                int index = customersList.FindIndex(c => c.Name == inCustomer.Name);
+                if (index < 0)
+                    return;
+                else
+                {
+                    customersList.RemoveAt(index);
+                    await firebase.Child("Customers").Child(inCustomer.Name).DeleteAsync();
+                    MainWindow.customersPage.RetrieveCustomers();
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                var result = PMessageBox.Show("Failed to delete customer " + inCustomer.Name + "\n\r Expection: " + e, "Failed to delete label for" + inCustomer.Name, System.Windows.Forms.MessageBoxButtons.OK);
+                Console.WriteLine(e);
             }
         }
 
@@ -260,6 +353,7 @@ namespace Touchstone_Brother_IpP.Intergrated
 
     public class TLabel
     {
+        public string Key { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Barcode { get; set; }
@@ -276,6 +370,7 @@ namespace Touchstone_Brother_IpP.Intergrated
 
     public class Customer
     {
+        public string Key { get; set; }
         public string Name { get; set; }
         public List<TLabel> AllLabels { get; set; }
     }

@@ -61,6 +61,16 @@ namespace Touchstone_Brother_IpP.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ErrorQR {
+            get {
+                object obj = ResourceManager.GetObject("ErrorQR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon_lPk_icon {
@@ -77,6 +87,16 @@ namespace Touchstone_Brother_IpP.Properties {
             get {
                 object obj = ResourceManager.GetObject("Label", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap QRIcon {
+            get {
+                object obj = ResourceManager.GetObject("QRIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
