@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Drawing.Imaging;
 using QRCoder;
 using static QRCoder.PayloadGenerator;
+using Touchstone_Brother_IpP.Intergrated;
 
 namespace Touchstone_Brother_IpP
 {

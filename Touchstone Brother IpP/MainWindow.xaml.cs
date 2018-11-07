@@ -31,9 +31,22 @@ namespace Touchstone_Brother_IpP
     public partial class MainWindow : Window
     {
 
-        public static LocalFilesManagement PdfManage = App.LocalFilesManagement;
-        public static PrintManagement PrintManage = App.PrintManagement;
-        public static FirebaseManagement FirebaseManage = App.FirebaseManagement;
+        public static LocalFilesManagement LocalFilesManage
+        {
+            get { return App.LocalFilesManagement; }
+        }
+        public static OfflineManagement OfflineManagement
+        {
+            get { return App.OfflineManagement; }
+        }
+        public static PrintManagement PrintManage
+        {
+            get { return App.PrintManagement; }
+        }
+        public static FirebaseManagement FirebaseManage
+        {
+            get { return App.FirebaseManagement; }
+        }
 
         public static Home homePage = new Home();
         public static Labels labelsPage = new Labels();
@@ -49,12 +62,8 @@ namespace Touchstone_Brother_IpP
         public MainWindow()
         {
             InitializeComponent();
-
-            PdfManage = App.LocalFilesManagement;
-            PrintManage = App.PrintManagement;
-            FirebaseManage = App.FirebaseManagement;
-
-            FirebaseManage._MainWindow = this;
+            
+            OfflineManagement._MainWindow = this;
             MainView.DataContext = this;
             //DebuggingMode = true;
         }
@@ -85,7 +94,7 @@ namespace Touchstone_Brother_IpP
         {
             MainView.Content = labelsPage;
             Console.WriteLine("Breakline");
-            PdfManage.PushToList();
+            LocalFilesManage.PushToList();
         }
         public void CustomersPage()
         {
@@ -99,7 +108,7 @@ namespace Touchstone_Brother_IpP
             startup = true;
             customersPage.RetrieveCustomers();
             MainView.Content = homePage;
-            labelsPage.pDFManagment = PdfManage;
+            labelsPage.pDFManagment = LocalFilesManage;
             startup = false;
         }
 
@@ -149,21 +158,21 @@ namespace Touchstone_Brother_IpP
         {
             Customer newcustomer = new Customer
             {
-                Name = "steve",
+                Name = "Daniel",
                 AllLabels = new List<TLabel> { new TLabel
             {
-            Name = "steve",
-            Address = "cxds",
-            Barcode = "456412313",
-            DeliveryDate = "qweqwqe",
-            ConsignmentNumber = "987561",
-            PostCode = "SLLSA12",
-            Telephone = "31288312929",
-            Location =  "that place",
-            LocationNumber = "8",
+            Name = "Daniel",
+            Address = "jusadk",
+            Barcode = "45846213",
+            DeliveryDate = "7/12/11",
+            ConsignmentNumber = "6731529",
+            PostCode = "ZZ231YJ",
+            Telephone = "071536352728",
+            Location =  "this place",
+            LocationNumber = "33",
             ParcelNumber = "001",
-            ParcelSize = "s",
-            Weight = "not enough"
+            ParcelSize = "L",
+            Weight = "too heavy"
             } }
             };
             FirebaseManage.InsertCustomer(newcustomer, customersPage.CustomersList);
@@ -195,7 +204,7 @@ namespace Touchstone_Brother_IpP
 
             TLabel L = new TLabel
             {
-                Name = "steve",
+                Name = "Daniel",
                 Address = stringGenerator(25),
                 Barcode = intGenerator(20).ToString(),
                 DeliveryDate = intGenerator(8).ToString(),
@@ -205,9 +214,9 @@ namespace Touchstone_Brother_IpP
                 Location = stringGenerator(5),
                 LocationNumber = intGenerator(2).ToString(),
                 ParcelNumber = "001",
-                ParcelSize = "s",
-                Weight = "not enough",
-                Key = "-LiZoxIyWO0KTnahV4iy"
+                ParcelSize = "L",
+                Weight = "Too heavy",
+                Key = "-AuS7Bd5Dw0q-SkKD434"
             };
             FirebaseManage.InsertLabel(L);
         }

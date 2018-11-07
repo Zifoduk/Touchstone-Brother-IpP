@@ -21,6 +21,7 @@ using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Media.Imaging;
 
 namespace Touchstone_Brother_IpP.Intergrated
 {
@@ -310,13 +311,187 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         #region Save and Load file
 
+        public BitmapImage DecodeTempQRFile(string data)
+        {
+            try
+            { 
+                BitmapImage bitmapImage = new BitmapImage();
+                string retrievedPath = Path.GetFullPath(TempFolder + data + @".tmp");
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    try
+                    {
+                        byte[] buffer = File.ReadAllBytes(retrievedPath);
+                        ms.Write(buffer, 0, buffer.Length);
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = ms;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+                return bitmapImage;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+        public bool CheckTempFile(string filename, string extension)
+        {
+            try
+            {
+                var check = File.Exists(TempFolder + filename + extension);
+                return check;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            };
+        }
         public void SaveQR(Bitmap bmp, string key)
         {
-            bmp.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+            try
+            {
+                bmp.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
+        public void SaveCustomerLabels(List<TLabel> labels, string key)
+        {
+            try
+            { 
+            string JsonFile = App.OfflineManagement.JsonExport(labels);
+            File.WriteAllText(TempFolder + key + @".datx", JsonFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        public void SaveCustomerInformation(Customer customer)
+        {
+            try
+            { 
+                string JsonFile = App.OfflineManagement.JsonExport(customer);
+                File.WriteAllText(TempFolder + customer.Key + @".datxx", JsonFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public List<Customer> LoadCustomerList()
+        {
+            try
+            { 
+                return App.OfflineManagement.JsonImport(JsonImportConfig.CustomerList, null) as List<Customer>;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+        public TLabel LoadCustomerLabels(string key)
+        {
+            try
+            { 
+                return App.OfflineManagement.JsonImport(JsonImportConfig.CustomerLabels, key) as TLabel;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+        public Customer LoadCustomerInformation(string key)
+        {
+            try
+            {
+                return App.OfflineManagement.JsonImport(JsonImportConfig.SpecificCustomer, key) as Customer;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public string RetrieveCustomerList()
+        {
+            try
+            {
+                if (CheckTempFile(@"jsgfiaueClist", @".datx"))
+                {
+                    return Path.GetFullPath(TempFolder + @"jsgfiaueClist.datx");
+                }
+                else
+                    throw new FileNotFoundException();
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public string RetrieveCustomerLabels(string key)
+        {
+            try
+            {
+                if (CheckTempFile(key, @".datx"))
+                {
+                    return Path.GetFullPath(TempFolder + key + @".datx");
+                }
+                else
+                    throw new FileNotFoundException();
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public string RetrieveCustomerInformation(string key)
+        {
+            try
+            {
+                if (CheckTempFile(key, @".datxx"))
+                {
+                    return Path.GetFullPath(TempFolder + key + @".datxx");
+                }
+                else
+                    throw new FileNotFoundException();
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #endregion
 
     }
-
-
 }

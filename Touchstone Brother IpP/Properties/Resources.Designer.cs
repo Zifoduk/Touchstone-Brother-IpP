@@ -99,5 +99,15 @@ namespace Touchstone_Brother_IpP.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] QRNormal {
+            get {
+                object obj = ResourceManager.GetObject("QRNormal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

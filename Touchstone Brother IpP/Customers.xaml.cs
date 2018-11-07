@@ -40,6 +40,8 @@ namespace Touchstone_Brother_IpP
             Weight = "char(25)"
         };
         public List<Customer> CustomersList = new List<Customer>();
+        public Customer CurrentCustomer = null;
+
         public Customers()
         {
             InitializeComponent();
@@ -70,6 +72,7 @@ namespace Touchstone_Brother_IpP
         {
             try
             {
+                CurrentCustomer = null;
                 if (MainWindow.startup)
                 {
                     var newCustomerList = new List<Customer>();
@@ -121,6 +124,9 @@ namespace Touchstone_Brother_IpP
                 ViewLabelsList.ItemsSource = CustomerLabels;
                 ViewQRCode.Source = App.BarcodeManagement.GenerateDisplayQR(CustomerInformation.Key);
                 SelectedLabel = DefaultLabel;
+                CurrentCustomer = CustomerInformation;
+                //TEST OFFLINE EXPORT
+                App.LocalFilesManagement.SaveCustomerLabels(CustomerLabels, CustomerInformation.Key);
                 PushToCustomerView(DefaultLabel);
             }
         }
@@ -200,6 +206,14 @@ namespace Touchstone_Brother_IpP
                 {
                     MainWindow.FirebaseManage.DeleteLabel(SelectedLabel, CustomersList);
                 }
+            }
+        }
+
+        private void ViewQRButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewQRCode.Source != null && CurrentCustomer != null)
+            {
+
             }
         }
     }

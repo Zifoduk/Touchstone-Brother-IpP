@@ -15,8 +15,6 @@ namespace Touchstone_Brother_IpP.Intergrated
     public class BarcodeManagement
     {
 
-        public string testlocation = @"C:\Users\talle\Desktop\lol.bmp";
-
         public BarcodeManagement()
         {
 
@@ -26,20 +24,27 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             try
             {
-                QRCodeGenerator generator = new QRCodeGenerator();
-                QRCodeData qRCodeData = generator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.H);
-                QRCode qRCode = new QRCode(qRCodeData);
-                Bitmap QRImage = qRCode.GetGraphic(40, Color.Black, Color.White, Properties.Resources.QRIcon, 30, 3, true);
-                BitmapImage bitmapImage = new BitmapImage();
-                using (MemoryStream ms = new MemoryStream())
+                if (!App.LocalFilesManagement.CheckTempFile(Data, @".tmp"))
                 {
-                    App.LocalFilesManagement.SaveQR(QRImage, Data);
-                    QRImage.Save(ms, ImageFormat.Bmp);
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.EndInit();
-                    return bitmapImage;
+                    QRCodeGenerator generator = new QRCodeGenerator();
+                    QRCodeData qRCodeData = generator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.H);
+                    QRCode qRCode = new QRCode(qRCodeData);
+                    Bitmap QRImage = qRCode.GetGraphic(40, Color.Black, Color.White, Properties.Resources.QRIcon, 30, 3, true);
+                    BitmapImage bitmapImage = new BitmapImage();
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        App.LocalFilesManagement.SaveQR(QRImage, Data);
+                        QRImage.Save(ms, ImageFormat.Bmp);
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = ms;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+                        return bitmapImage;
+                    }
+                }
+                else
+                {
+                    return App.LocalFilesManagement.DecodeTempQRFile(Data); 
                 }
             }
             catch (Exception e)

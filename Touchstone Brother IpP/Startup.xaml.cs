@@ -44,7 +44,33 @@ namespace Touchstone_Brother_IpP
                 EmailBox.Text = Settings.Default.Email;
             SaveEmailCheck.IsChecked = SaveEmail;
             SaveEmailCheck.Click += SaveEmailCheck_Click;
-            
+
+
+            /*
+            Customer newcustomer = new Customer
+            {
+                Name = "Daniel",
+                Key = "lolskey",
+                AllLabels = new List<TLabel> { new TLabel
+            {
+            Name = "Daniel",
+            Address = "jusadk",
+            Barcode = "45846213",
+            DeliveryDate = "7/12/11",
+            ConsignmentNumber = "6731529",
+            PostCode = "ZZ231YJ",
+            Telephone = "071536352728",
+            Location =  "this place",
+            LocationNumber = "33",
+            ParcelNumber = "001",
+            ParcelSize = "L",
+            Weight = "too heavy",
+            Key = "lolskey"
+            } }
+            };
+
+            App.LocalFilesManagement.SaveCustomerInformation(newcustomer);
+            var loadedcustomer = App.OfflineManagement.JsonImport(JsonImportConfig.SpecificCustomer, "lolskey");*/
         }
 
         private void SaveEmailCheck_Click(object sender, RoutedEventArgs e)

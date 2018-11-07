@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="Intergrated\BarcodeManagement.cs" />
     <Compile Include="Intergrated\ConnectionManagement.cs" />
+    <Compile Include="Intergrated\OfflineManagement.cs" />
     <Compile Include="Intergrated\ShortGuid.cs" />
     <Compile Include="Labels.xaml.cs">
       <DependentUpon>Labels.xaml</DependentUpon>
@@ -314,6 +315,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Label.lbx" />
+    <None Include="Resources\QRNormal.lbx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

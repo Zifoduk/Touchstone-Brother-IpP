@@ -18,65 +18,15 @@ namespace Touchstone_Brother_IpP.Intergrated
     {
         //change so authtokenasyncfactory has to be manually typed in at settings
         FirebaseClient firebase;
-        public bool IsOnline;
-        public MainWindow _MainWindow;
+        private bool IsOnline
+        {
+            get { return App.OfflineManagement.IsOnline; }
+        }
 
         public FirebaseManagement()
         {            
-            var CheckConnectionThread = new Thread(CheckForInternetConnection);
-            CheckConnectionThread.Start();
         }
 
-        bool previousIsOnline = false;
-        public void CheckForInternetConnection()
-        {
-            while (true)
-            {
-                try
-                {
-                    using (var client = new WebClient())
-                    using (client.OpenRead("http://clients3.google.com/generate_204"))
-                    {
-                        if (!previousIsOnline)
-                        {
-                            IsOnline = true;
-                        }
-                    }
-                }
-                catch
-                {
-                    if (previousIsOnline)
-                    {
-                        IsOnline = false;
-                    }
-                }
-
-                try
-                {
-                    if (_MainWindow != null)
-                    {
-                        if (_MainWindow.IsOnlineEllipse != null)
-                            if (IsOnline && !previousIsOnline)
-                            {
-                                _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Green));
-                                previousIsOnline = true;
-                            }
-                            else if (!IsOnline && previousIsOnline)
-                            {
-                                _MainWindow.IsOnlineEllipse.Dispatcher.Invoke(() => (_MainWindow.IsOnlineEllipse.Fill = Brushes.Red));
-                                previousIsOnline = false;
-                            }
-                    }
-                }
-                catch (Exception)
-                {
-
-                    Console.WriteLine("unable to changed mainwindow UI");
-                }
-
-                Thread.Sleep(100);
-            }
-        }
 
         public void SaveDataOffline()
         {

@@ -161,7 +161,9 @@
                                         </StackPanel>
                                     </Grid>
                                     <Grid>
-                                        <Image x:Name="ViewQRCode" Width="145" Height="145"/>
+                                        <Button Width="150" Height="150" Background="White" BorderBrush="Gray" Click="ViewQRButton_Click">
+                                            <Image x:Name="ViewQRCode" Width="145" Height="145" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Button>
                                     </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">

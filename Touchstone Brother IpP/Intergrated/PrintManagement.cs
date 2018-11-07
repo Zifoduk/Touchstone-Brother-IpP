@@ -11,6 +11,8 @@ using bpac;
 using System.Collections;
 using System.Windows.Media;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Touchstone_Brother_IpP.Intergrated
 {
@@ -20,6 +22,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         private static string SourceFolder = LocalFilesManagement.SourceFolder;
         private static string TemplatesFolder = LocalFilesManagement.CheckDir(DataFolder + @"Templates\");
         private static string LabelLocation = FindLBXFile(TemplatesFolder, "Label.lbx");
+        private static string QRLocation = FindLBXFile(TemplatesFolder, "QR.lbx");
 
         public static string FindLBXFile(string _Directory, string filename)
         {
@@ -38,17 +41,19 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             if (!File.Exists(TemplatesFolder + @"Label.lbx"))
                 File.WriteAllBytes(_Directory + "Label.lbx", Properties.Resources.Label);
+            if (!File.Exists(TemplatesFolder + @"QR.lbx"))
+                File.WriteAllBytes(_Directory + "QR.lbx", Properties.Resources.QRNormal);
         }
 
 
         private enum ToPrint { No, Yes, Retry };
-        private ToPrint PrinterErrorCheck()
+        private ToPrint PrinterErrorCheck(string Location)
         {
             var error = -1;
             DocumentClass document = new DocumentClass();
             try
             {
-                document.Open(LabelLocation);
+                document.Open(Location);
             
                 object[] printers = (object[])document.Printer.GetInstalledPrinters();
                 Console.WriteLine("Printers Found");
@@ -127,7 +132,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         void HandlePrinted(int status, object value) { Console.WriteLine("Printed event called"); }
         public void Print(TLabel tLabel)
         {
-            var _toprint = PrinterErrorCheck();
+            var _toprint = PrinterErrorCheck(LabelLocation);
             if (_toprint == ToPrint.Yes)
             {
                 DocumentClass document = new DocumentClass();
@@ -159,11 +164,44 @@ namespace Touchstone_Brother_IpP.Intergrated
             }
             else if(_toprint == ToPrint.Retry)
                 restartPrint(tLabel);
-            
         }
         public void restartPrint(TLabel tLabel)
         {
             Print(tLabel);
+        }
+
+        public void Print(Bitmap QRCode)
+        {
+            var _toprint = PrinterErrorCheck(QRLocation);
+            if (_toprint == ToPrint.Yes)
+            {
+                DocumentClass document = new DocumentClass();
+                document.Printed += new IPrintEvents_PrintedEventHandler(HandlePrinted);
+                document.Open(LabelLocation);
+
+                #region Document Object Text
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    QRCode.Save(ms, ImageFormat.Bmp);
+                    document.GetObject("QRImage").SetData(0, ms, 4);
+                }
+                #endregion
+
+                document.StartPrint((QRCode.GetHashCode().ToString() + " Print Job"), PrintOptionConstants.bpoDefault);
+                document.PrintOut(1, PrintOptionConstants.bpoDefault);
+                int ErrorCode = document.ErrorCode;
+
+                Console.WriteLine("Error Code > " + ErrorCode);
+
+                document.EndPrint();
+                document.Close();
+            }
+            else if (_toprint == ToPrint.Retry)
+                restartPrint(QRCode);
+        }
+        public void restartPrint(Bitmap QRCode)
+        {
+            Print(QRCode);
         }
     }
 }

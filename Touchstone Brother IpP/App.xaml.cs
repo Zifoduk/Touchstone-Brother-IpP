@@ -17,6 +17,7 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class App : Application
     {
+        public static OfflineManagement OfflineManagement = new OfflineManagement();
         public static FirebaseManagement FirebaseManagement = new FirebaseManagement();
         public static LocalFilesManagement LocalFilesManagement = new LocalFilesManagement();
         public static BarcodeManagement BarcodeManagement = new BarcodeManagement();
