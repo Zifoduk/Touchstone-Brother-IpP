@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Touchstone_Brother_IpP.Intergrated;
+using Touchstone_Brother_IpP.Models;
 using Nito.AsyncEx;
 
 namespace Touchstone_Brother_IpP
@@ -24,6 +25,8 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class Customers : Page
     {
+        private CustomerPageViewModel _viewModel => App.CustomerPageViewModel;
+
         TLabel SelectedLabel = null;
         private readonly TLabel DefaultLabel = new TLabel {
             Name = "Customer Name",
@@ -45,7 +48,8 @@ namespace Touchstone_Brother_IpP
         public Customers()
         {
             InitializeComponent();
-            PushToCustomerView(DefaultLabel);
+            DataContext = _viewModel;
+            _viewModel.GenerateLabelView(DefaultLabel);
         }
         
         private void ButtonSort_Click(object sender, RoutedEventArgs e)
@@ -65,69 +69,20 @@ namespace Touchstone_Brother_IpP
 
         private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            RetrieveCustomers();
+            _viewModel.GenerateCustomerList();
         }
-
-        public async void RetrieveCustomers()
-        {
-            try
-            {
-                CurrentCustomer = null;
-                if (MainWindow.startup)
-                {
-                    var newCustomerList = new List<Customer>();
-                    await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, true);
-                    CustomersList = newCustomerList;
-                    PushtoListView(CustomersList);
-                }
-                else
-                {
-                    var newCustomerList = new List<Customer>();
-                    await MainWindow.FirebaseManage.RetrieveCustomers(newCustomerList, false);
-                    foreach(var cust in newCustomerList)
-                    {
-                        try
-                        {
-                            cust.AllLabels = cust.AllLabels.OrderBy(i => i.DeliveryDate).ThenBy(i => i.ConsignmentNumber).ToList();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(cust.Name);
-                            Console.WriteLine(e);
-                        }
-                    }
-                    CustomersList = newCustomerList;
-                    PushtoListView(CustomersList);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-        }
-
-        public void PushtoListView (List<Customer> customerList)
-        {
-            CustomerListView.ItemsSource = customerList;
-        }
-
-        private async void CustomerListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        
+        private void CustomerListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             item.IsSelected = true;
             if(item != null && item.IsSelected)
             {
                 var CustomerInformation = CustomerListView.ItemContainerGenerator.ItemFromContainer(item) as Customer;
-                var CustomerLabels = await App.FirebaseManagement.RetrieveCustomerLabel(CustomerInformation.Key);
-                //ViewLabelsList.ItemsSource = CustomerInformation.AllLabels;
-                ViewLabelsList.ItemsSource = CustomerLabels;
-                ViewQRCode.Source = App.BarcodeManagement.GenerateDisplayQR(CustomerInformation.Key);
-                SelectedLabel = DefaultLabel;
-                CurrentCustomer = CustomerInformation;
-                //TEST OFFLINE EXPORT
-                App.LocalFilesManagement.SaveCustomerLabels(CustomerLabels, CustomerInformation.Key);
-                PushToCustomerView(DefaultLabel);
+
+
+                AsyncContext.Run(() => _viewModel.GenerateCustomerView(CustomerInformation));
+                _viewModel.ResetLabelView();
             }
         }
 
@@ -150,24 +105,8 @@ namespace Touchstone_Brother_IpP
             SelectedLabel = ViewLabelsList.ItemContainerGenerator.ItemFromContainer(parentItem) as TLabel;
             if (SelectedLabel != null)
             {
-                PushToCustomerView(SelectedLabel);
+                _viewModel.GenerateLabelView(SelectedLabel);
             }
-        }
-
-        public void PushToCustomerView(TLabel tLabel)
-        {
-            ViewName.Text = tLabel.Name;
-            ViewAddress.Text = tLabel.Address;
-            ViewBarcode.Text = tLabel.Barcode;
-            ViewDeliveryDate.Text = tLabel.DeliveryDate;
-            ViewConsignmentNumber.Text = tLabel.ConsignmentNumber;
-            ViewPostcode.Text = tLabel.PostCode;
-            ViewTelephone.Text = tLabel.Telephone;
-            ViewLocation.Text = tLabel.Location;
-            ViewLocationNumber.Text = tLabel.LocationNumber;
-            ViewParcelNumber.Text = tLabel.ParcelNumber;
-            ViewParcelSize.Text = tLabel.ParcelSize;
-            ViewWeight.Text = tLabel.Weight;
         }
 
         private void ViewPrintButton_Click(object sender, RoutedEventArgs e)

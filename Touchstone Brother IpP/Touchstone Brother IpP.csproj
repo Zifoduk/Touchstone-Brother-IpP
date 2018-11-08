@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="Intergrated\BarcodeManagement.cs" />
     <Compile Include="Intergrated\ConnectionManagement.cs" />
+    <Compile Include="Intergrated\CustomersManagement.cs" />
     <Compile Include="Intergrated\OfflineManagement.cs" />
     <Compile Include="Intergrated\ShortGuid.cs" />
     <Compile Include="Labels.xaml.cs">
@@ -251,6 +252,7 @@
     <Compile Include="Intergrated\FirebaseManagement.cs" />
     <Compile Include="Intergrated\LocalFilesManagement.cs" />
     <Compile Include="Intergrated\PrintManagement.cs" />
+    <Compile Include="Models\CustomersPageViewModel.cs" />
     <Compile Include="Models\MainWindowViewModel.cs" />
     <Compile Include="PopDialog.xaml.cs">
       <DependentUpon>PopDialog.xaml</DependentUpon>

@@ -24,7 +24,8 @@ namespace Touchstone_Brother_IpP.Intergrated
         }
 
         public FirebaseManagement()
-        {            
+        {    
+            
         }
 
 
@@ -136,59 +137,58 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         #region Database Manipulation
 
-        public async Task RetrieveCustomers(List<Customer> customersList, bool test)
+        public async Task FetchCustomers(List<Customer> customersList, bool test)
         {
-            if (IsOnline)
+            try
             {
-                if (test)
+                if (IsOnline)
                 {
-                    var customers = await firebase.Child("Customers").OrderByKey().OnceAsync<Customer>();
-                    Console.WriteLine(customers);
-                    return;
+                    if (test)
+                    {
+                        var customers = await firebase.Child("Customers").OrderByKey().OnceAsync<Customer>();
+                        Console.WriteLine(customers);
+                        return;
+                    }
+                    else
+                    {
+                        var customers = await firebase.Child("Customers").OrderByKey().OnceAsync<Customer>();
+                        customersList.Clear();
+                        foreach (var c in customers)
+                            customersList.Add(c.Object);
+                        try
+                        {
+                            var observed = firebase.Child("Customers").AsObservable<Customer>(elementRoot: "Customer").Subscribe(e => CustomerSubscribedEvent(e));
+                            Console.WriteLine("subscribed");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Unable to subscribe");
+                            Console.WriteLine("///////////////////////////");
+                            Console.WriteLine(e);
+                            Console.WriteLine("///////////////////////////");
+                        }
+                        return;
+                    }
                 }
                 else
                 {
-                    var customers = await firebase.Child("Customers").OrderByKey().OnceAsync<Customer>();
-                    customersList.Clear();
-                    foreach (var c in customers)
-                    {
-                        if(c.Object.AllLabels.Any(i => i == null))
-                        {
-                            c.Object.AllLabels.RemoveAll(item => item == null);
-                            await firebase.Child("Customers").Child(c.Object.Name).PutAsync(c.Object);
-                            
-                        }
-                        customersList.Add(c.Object);
-                    }
-                    try
-                    {
-                        var observed = firebase.Child("Customers").AsObservable<Customer>(elementRoot: "Customer").Subscribe(e => CustomerSubscribedEvent(e));
-                        Console.WriteLine("subscribed");
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Unable to subscribe");
-                        Console.WriteLine("///////////////////////////");
-                        Console.WriteLine(e);
-                        Console.WriteLine("///////////////////////////");
-                    }
-                    return;
+                    /////Insert code for offline reading
                 }
             }
-            else
+            catch(Exception e)
             {
-                /////Insert code for offline reading
+                //Insert code
             }
         }
 
-        public async Task<List<TLabel>> RetrieveCustomerLabel(string customersKey)
+        public async Task<List<TLabel>> FetchCustomerLabels(string customerKey)
         {
             List<TLabel> RetrievedList = new List<TLabel>();
             try
             {
                 if (IsOnline)
                 {
-                    var Labels = await firebase.Child("Labels").Child(customersKey).OrderByKey().OnceAsync<TLabel>();
+                    var Labels = await firebase.Child("Labels").Child(customerKey).OrderByKey().OnceAsync<TLabel>();
                     foreach (var l in Labels)
                         RetrievedList.Add(l.Object);
                 }
@@ -235,7 +235,7 @@ namespace Touchstone_Brother_IpP.Intergrated
             customer.Key = customerUID;
             await firebase.Child("Customers/").Child(customerUID).PutAsync(customer);
             Thread.Sleep(1000);
-            MainWindow.customersPage.RetrieveCustomers();
+            App.CustomerPageViewModel.GenerateCustomerList();
         }
 
         public async void InsertLabel(TLabel inLabel/*, List<Customer> customersList*/)
@@ -266,7 +266,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     customersList[index].AllLabels.RemoveAt(indexLabel);
                     customersList[index].AllLabels.RemoveAll(item => item == null);
                     await firebase.Child("Customers").Child(name).PutAsync(customersList[index]);
-                    MainWindow.customersPage.RetrieveCustomers();
+                    App.CustomerPageViewModel.GenerateCustomerList();
                 }
             }
             catch (Exception e)
@@ -287,8 +287,8 @@ namespace Touchstone_Brother_IpP.Intergrated
                 {
                     customersList.RemoveAt(index);
                     await firebase.Child("Customers").Child(inCustomer.Name).DeleteAsync();
-                    MainWindow.customersPage.RetrieveCustomers();
-                    
+                    App.CustomerPageViewModel.GenerateCustomerList();
+
                 }
             }
             catch (Exception e)
@@ -301,29 +301,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         #endregion 
     }
 
-    public class TLabel
-    {
-        public string Key { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Barcode { get; set; }
-        public string DeliveryDate { get; set; }
-        public string ConsignmentNumber { get; set; }
-        public string PostCode { get; set; }
-        public string Telephone { get; set; }
-        public string Location { get; set; }
-        public string LocationNumber { get; set; }
-        public string ParcelNumber { get; set; }
-        public string ParcelSize { get; set; }
-        public string Weight { get; set; }
-    }
 
-    public class Customer
-    {
-        public string Key { get; set; }
-        public string Name { get; set; }
-        public List<TLabel> AllLabels { get; set; }
-    }
 
     public class ListenChanges<T> : IObserver<FirebaseEvent<T>>
     {

@@ -22,6 +22,8 @@ namespace Touchstone_Brother_IpP
         public static LocalFilesManagement LocalFilesManagement = new LocalFilesManagement();
         public static BarcodeManagement BarcodeManagement = new BarcodeManagement();
         public static PrintManagement PrintManagement = new PrintManagement();
+        public static CustomersManagement CustomersManagement = new CustomersManagement();
+        public static CustomerPageViewModel CustomerPageViewModel = new CustomerPageViewModel();
         public static Startup startup;
         public static MainWindow mainWindow;
 

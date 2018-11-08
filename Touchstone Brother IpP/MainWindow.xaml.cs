@@ -99,14 +99,14 @@ namespace Touchstone_Brother_IpP
         public void CustomersPage()
         {
             MainView.Content = customersPage;
-            customersPage.RetrieveCustomers();
+            App.CustomerPageViewModel.GenerateCustomerList();
         }
 
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             startup = true;
-            customersPage.RetrieveCustomers();
+            App.CustomerPageViewModel.GenerateCustomerList();
             MainView.Content = homePage;
             labelsPage.pDFManagment = LocalFilesManage;
             startup = false;
@@ -226,26 +226,6 @@ namespace Touchstone_Brother_IpP
         {
             //you gonna wanna change this to have a shutdown button
             App.AppClose();
-        }
-    }
-
-
-
-    public abstract class DebugViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
-        {
-            VerifyPropertyName(propertyName);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        [Conditional("DEBUG")]
-        private void VerifyPropertyName(string propertyName)
-        {
-            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-                throw new ArgumentNullException(GetType().Name + " does not contain property: " + propertyName);
         }
     }
 }

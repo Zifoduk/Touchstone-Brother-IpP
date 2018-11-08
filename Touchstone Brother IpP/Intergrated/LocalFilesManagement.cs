@@ -96,7 +96,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             Flush();
             ExtractData();
-            MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
+            //MainWindow.labelsPage.LabelListView.ItemsSource = ISourceLabels;
         }
 
         #region PDF Management
@@ -354,35 +354,41 @@ namespace Touchstone_Brother_IpP.Intergrated
                 return false;
             };
         }
-        public void SaveQR(Bitmap bmp, string key)
+
+        public void Save(string JsonFile, string key, SaveConfig config)
         {
             try
             {
-                bmp.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+                switch (config)
+                {
+                    case SaveConfig.CustomerList:
+                        File.WriteAllText(TempFolder + "b2y2dbqd87sa" + @".datxx", JsonFile);
+                        break;
+                    case SaveConfig.CustomerInfomation:
+                        File.WriteAllText(TempFolder + key + @".datxx", JsonFile);
+                        break;
+                    case SaveConfig.CustomerLabels:
+                        File.WriteAllText(TempFolder + key + @".datx", JsonFile);
+                        break;
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
         }
-        public void SaveCustomerLabels(List<TLabel> labels, string key)
+        public void Save(Bitmap BmpFile, string key, SaveConfig config)
         {
             try
-            { 
-            string JsonFile = App.OfflineManagement.JsonExport(labels);
-            File.WriteAllText(TempFolder + key + @".datx", JsonFile);
-            }
-            catch (Exception e)
             {
-                Console.WriteLine(e);
-            }
-        }
-        public void SaveCustomerInformation(Customer customer)
-        {
-            try
-            { 
-                string JsonFile = App.OfflineManagement.JsonExport(customer);
-                File.WriteAllText(TempFolder + customer.Key + @".datxx", JsonFile);
+                switch (config)
+                {
+                    case SaveConfig.QRCode:
+                        BmpFile.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception e)
             {
@@ -402,11 +408,11 @@ namespace Touchstone_Brother_IpP.Intergrated
                 return null;
             }
         }
-        public TLabel LoadCustomerLabels(string key)
+        public List<TLabel> LoadCustomerLabels(string key)
         {
             try
             { 
-                return App.OfflineManagement.JsonImport(JsonImportConfig.CustomerLabels, key) as TLabel;
+                return App.OfflineManagement.JsonImport(JsonImportConfig.CustomerLabels, key) as List<TLabel>;
             }
             catch (Exception e)
             {
@@ -431,9 +437,9 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             try
             {
-                if (CheckTempFile(@"jsgfiaueClist", @".datx"))
+                if (CheckTempFile(@"b2y2dbqd87sa", @".datxx"))
                 {
-                    return Path.GetFullPath(TempFolder + @"jsgfiaueClist.datx");
+                    return Path.GetFullPath(TempFolder + @"b2y2dbqd87sa.datxx");
                 }
                 else
                     throw new FileNotFoundException();
@@ -493,5 +499,13 @@ namespace Touchstone_Brother_IpP.Intergrated
 
         #endregion
 
+    }
+
+    public enum SaveConfig
+    {
+        CustomerList,
+        CustomerInfomation,
+        CustomerLabels,
+        QRCode
     }
 }

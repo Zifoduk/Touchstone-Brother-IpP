@@ -33,7 +33,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     BitmapImage bitmapImage = new BitmapImage();
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        App.LocalFilesManagement.SaveQR(QRImage, Data);
+                        App.OfflineManagement.OfflineExport(OfflineConfig.CustomerQR, qrImage: QRImage, key: Data);
                         QRImage.Save(ms, ImageFormat.Bmp);
                         bitmapImage.BeginInit();
                         bitmapImage.StreamSource = ms;
@@ -65,7 +65,6 @@ namespace Touchstone_Brother_IpP.Intergrated
                 }
             }
         }
-
         public BitmapImage GeneratePrintQR(string Data)
         {
             try
@@ -77,7 +76,6 @@ namespace Touchstone_Brother_IpP.Intergrated
                 BitmapImage bitmapImage = new BitmapImage();
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    App.LocalFilesManagement.SaveQR(QRImage, Data);
                     QRImage.Save(ms, ImageFormat.Bmp);
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = ms;
