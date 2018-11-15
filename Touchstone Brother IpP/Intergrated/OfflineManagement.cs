@@ -36,10 +36,11 @@ namespace Touchstone_Brother_IpP.Intergrated
         {
             while (true)
             {
+                Console.WriteLine("Check internet " + DateTime.Now.ToLongTimeString().ToString());
                 try
                 {
                     using (var client = new WebClient())
-                    using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    using (client.OpenRead("http://www.microsoft.com"))
                     {
                         if (!previousIsOnline)
                         {
@@ -51,8 +52,36 @@ namespace Touchstone_Brother_IpP.Intergrated
                             //Finish
                         }
                     }
+
+                    /*Uri Url = new Uri("http://www.microsoft.com");
+
+                    WebRequest WebReq;
+                    WebResponse Resp;
+                    WebReq = WebRequest.Create(Url);
+
+                    try
+                    {
+                        Resp = WebReq.GetResponse();
+                        Resp.Close();
+                        WebReq = null;
+                        if (!previousIsOnline)
+                        {
+                            IsOnline = true;
+                            var result = OfflineExport(OfflineConfig.CustomerList);
+                        }
+                    }
+
+                    catch
+                    {
+                        WebReq = null;
+                        IsOnline = false;
+                        if (previousIsOnline)
+                        {
+                            IsOnline = false;
+                        }
+                    }*/
                 }
-                catch
+                catch(Exception)
                 {
                     if (previousIsOnline)
                     {
@@ -82,8 +111,9 @@ namespace Touchstone_Brother_IpP.Intergrated
 
                     Console.WriteLine("unable to changed mainwindow UI");
                 }
-
-                Thread.Sleep(50);
+                Console.WriteLine(IsOnline);
+                Console.WriteLine("Check internet End " + DateTime.Now.ToLongTimeString().ToString());
+                Thread.Sleep(500);
             }
         }
         #endregion
