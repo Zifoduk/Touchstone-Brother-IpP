@@ -14,6 +14,11 @@ namespace Touchstone_Brother_IpP.Models
 
     public class CustomerPageViewModel : INotifyPropertyChanged
     {
+        public static PrintManagement PrintManage
+        {
+            get { return App.PrintManagement; }
+        }
+
         private List<TLabel> _viewLabelListSource;
         public List<TLabel> ViewLabelListSource
         {
@@ -85,6 +90,13 @@ namespace Touchstone_Brother_IpP.Models
             CustomerViewInformation Fetched = await App.CustomersManagement.RetrieveCustomerView(SelectedCustomer);
             ViewQRCodeSource = Fetched.RetrievedQRImage;
             ViewLabelListSource = Fetched.RetrievedLabels;
+        }
+
+        public async void PrintQR(Customer SelectedCustomer)
+        {
+            CustomerViewInformation Fetched = await App.CustomersManagement.RetrieveCustomerView(SelectedCustomer);
+            var BitmapQR = Fetched.RetrievedQRImage;
+            PrintManage.Print(BitmapQR);
         }
 
         public void ResetLabelView()

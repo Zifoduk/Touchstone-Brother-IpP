@@ -5,34 +5,28 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using Touchstone_Brother_IpP.Intergrated;
+using static Touchstone_Brother_IpP.Intergrated.CustomersManagement;
 
 namespace Touchstone_Brother_IpP.Models
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+
+    public class BrowserViewModel : INotifyPropertyChanged
     {
-        public bool isSynced;
-        private bool _Debug;
-        public bool Debug
+
+        private object _viewFrameContext;
+        public object ViewFrameContext
         {
-            get { return _Debug; }
+            get { return _viewFrameContext; }
             set
             {
-                _Debug = value;
-                OnPropertyChanged(nameof(Debug));
+                _viewFrameContext = value;
+                OnPropertyChanged(nameof(ViewFrameContext));
             }
         }
 
-        public MainWindowViewModel()
-        {
-            Debug = false;
-        }
-
-        public void TriggerLogout()
-        {
-            App.PostLogout();
-        }
-
-
+       
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {

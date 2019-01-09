@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Media.Imaging;
 
 namespace Touchstone_Brother_IpP.Intergrated
 {
@@ -40,9 +41,15 @@ namespace Touchstone_Brother_IpP.Intergrated
         public static void CreateTemplateFiles(string _Directory)
         {
             if (!File.Exists(TemplatesFolder + @"Label.lbx"))
+            {
                 File.WriteAllBytes(_Directory + "Label.lbx", Properties.Resources.Label);
+                LabelLocation = TemplatesFolder + @"Label.lbx";
+            }
             if (!File.Exists(TemplatesFolder + @"QR.lbx"))
+            {
                 File.WriteAllBytes(_Directory + "QR.lbx", Properties.Resources.QRNormal);
+                QRLocation = TemplatesFolder + @"Label.lbx";
+            }
         }
 
 
@@ -58,7 +65,9 @@ namespace Touchstone_Brother_IpP.Intergrated
                 object[] printers = (object[])document.Printer.GetInstalledPrinters();
                 Console.WriteLine("Printers Found");
                 foreach (var printer in printers)
+                {
                     Console.WriteLine(printer);
+                }
                 Console.WriteLine("End Printers Found");
                 string TemplateMedia = document.GetMediaName();
                 string PrinterMedia = document.Printer.GetMediaName();
@@ -68,7 +77,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                 {
                     error = 4258;
                     document.Close();
-                    var result = PMessageBox.Show("Error: e" + error + "No printer aviliable" + ": refer wiki > e" + error,
+                    var result = (DialogResult)PMessageBox.Show("Error: e" + error + "No printer aviliable" + ": refer wiki > e" + error,
                         "fault in Printers", MessageBoxButtons.RetryCancel);
                     if (result == DialogResult.Retry)                    
                         return ToPrint.Retry;                    
@@ -80,7 +89,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     {
                         error = 4261;
                         document.Close();
-                        var result = PMessageBox.Show("Error: e" + error + "\nTheres printer connected" +
+                        var result = (DialogResult)PMessageBox.Show("Error: e" + error + "\nTheres printer connected" +
                                 "\nRefer wiki > e" + error, "No printer connection", MessageBoxButtons.RetryCancel);
                         if (result == DialogResult.Retry)
                             return ToPrint.Retry;
@@ -92,7 +101,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                         {
                             error = 3465;
                             document.Close();
-                            var result = PMessageBox.Show("Error: e" + error + "No media installed in connected printer" + ": refer wiki > e" + error,
+                            var result = (DialogResult)PMessageBox.Show("Error: e" + error + "No media installed in connected printer" + ": refer wiki > e" + error,
                                 "Check Printers", MessageBoxButtons.RetryCancel);
                             if (result == DialogResult.Retry)
                                 return ToPrint.Retry;
@@ -102,7 +111,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                         {
                             error = 3461;
                             document.Close();
-                            var result = PMessageBox.Show("Error: e" + error + "\nMedia installed in printer: " + PrinterMedia +
+                            var result = (DialogResult)PMessageBox.Show("Error: e" + error + "\nMedia installed in printer: " + PrinterMedia +
                                 "\nIs not equal to document media: " + TemplateMedia + "\nMake sure media in printer is: " + TemplateMedia + "\nRefer wiki > e" + error,
                                 "Check Media", MessageBoxButtons.RetryCancel);
                             if (result == DialogResult.Retry)
@@ -116,12 +125,12 @@ namespace Touchstone_Brother_IpP.Intergrated
                 }
                 return ToPrint.No;
             }
-            catch(IndexOutOfRangeException e)
+            catch(Exception e)
             {
                 Console.WriteLine(e);
                 error = 4261;
                 document.Close();
-                var result = PMessageBox.Show("Error: e" + error + "No Brother printer connected found" + ": refer wiki > e" + error,
+                var result = (DialogResult)PMessageBox.Show("Error: e" + error + "No Brother printer connected found" + ": refer wiki > e" + error,
                     "Check Printers", MessageBoxButtons.RetryCancel);
                 if (result == DialogResult.Retry)
                     return ToPrint.Retry;
@@ -149,6 +158,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                 document.GetObject("PostCode").Text = tLabel.PostCode;
                 document.GetObject("Telephone").Text = tLabel.Telephone;
                 document.GetObject("Location").Text = tLabel.Location;
+                document.GetObject("Weight").Text = tLabel.Weight;
                 document.GetObject("LocationNumber").Text = tLabel.LocationNumber;
                 document.GetObject("ParcelNumber").Text = tLabel.ParcelNumber;
                 #endregion
@@ -177,7 +187,7 @@ namespace Touchstone_Brother_IpP.Intergrated
             {
                 DocumentClass document = new DocumentClass();
                 document.Printed += new IPrintEvents_PrintedEventHandler(HandlePrinted);
-                document.Open(LabelLocation);
+                document.Open(QRLocation);
 
                 #region Document Object Text
                 using (MemoryStream ms = new MemoryStream())
@@ -199,7 +209,58 @@ namespace Touchstone_Brother_IpP.Intergrated
             else if (_toprint == ToPrint.Retry)
                 restartPrint(QRCode);
         }
+        public void Print(BitmapImage QRCode)
+        {
+            try
+            {
+                var _toprint = PrinterErrorCheck(QRLocation);
+                if (_toprint == ToPrint.Yes)
+                {
+                    DocumentClass document = new DocumentClass();
+                    document.Printed += new IPrintEvents_PrintedEventHandler(HandlePrinted);
+                    document.Open(QRLocation);
+
+                    #region Document Setting
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        BitmapEncoder enc = new BmpBitmapEncoder();
+                        enc.Frames.Add(BitmapFrame.Create(QRCode));
+                        enc.Save(ms);
+                        Bitmap bitmap = new Bitmap(ms);
+                        App.LocalFilesManagement.Save(bitmap, null, SaveConfig.QRCode, true);
+                        IObjects data = document.Objects;
+                        foreach (IObject obj in data)
+                        {
+                            Console.WriteLine(obj.Name);
+                        }
+                        Console.WriteLine(data);
+                        document.GetObject("QRImage").SetData(0, App.LocalFilesManagement.TempBmpFile, 4);
+                        App.LocalFilesManagement.ClearTmp(true);
+                    }
+                    #endregion
+
+                    document.StartPrint((QRCode.GetHashCode().ToString() + " Print Job"), PrintOptionConstants.bpoDefault);
+                    document.PrintOut(1, PrintOptionConstants.bpoDefault);
+                    int ErrorCode = document.ErrorCode;
+
+                    Console.WriteLine("Error Code > " + ErrorCode);
+
+                    document.EndPrint();
+                    document.Close();
+                }
+                else if (_toprint == ToPrint.Retry)
+                    restartPrint(QRCode);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         public void restartPrint(Bitmap QRCode)
+        {
+            Print(QRCode);
+        }
+        public void restartPrint(BitmapImage QRCode)
         {
             Print(QRCode);
         }

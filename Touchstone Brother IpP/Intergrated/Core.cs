@@ -5,33 +5,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Touchstone_Brother_IpP.Intergrated;
 
-namespace Touchstone_Brother_IpP.Models
+namespace Touchstone_Brother_IpP.Intergrated
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class Core : INotifyPropertyChanged
     {
-        public bool isSynced;
-        private bool _Debug;
-        public bool Debug
+        private List<Customer> _CurrentCustomerList;
+        public List<Customer> CurrentCustomerList
         {
-            get { return _Debug; }
+            get { return _CurrentCustomerList; }
             set
             {
-                _Debug = value;
-                OnPropertyChanged(nameof(Debug));
+                _CurrentCustomerList = value;
+                OnPropertyChanged(nameof(CurrentCustomerList));
             }
         }
-
-        public MainWindowViewModel()
-        {
-            Debug = false;
-        }
-
-        public void TriggerLogout()
-        {
-            App.PostLogout();
-        }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

@@ -17,6 +17,7 @@ namespace Touchstone_Brother_IpP.Intergrated
     {
         public bool IsOnline;
         public MainWindow _MainWindow;
+        Core AppCore { get { return App.Core; } }
         FirebaseManagement FirebaseManagement
         {
             get { return App.FirebaseManagement; }
@@ -171,7 +172,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                 switch (exportConfig)
                 {
                     case OfflineConfig.CustomerList:
-                        var RetrievedList = App.CustomersManagement.CustomersList;
+                        var RetrievedList = AppCore.CurrentCustomerList;
                         if (RetrievedList.Count == 0)
                             throw new NullReferenceException();
                         RetrievedExport = (List<Customer>)RetrievedList;

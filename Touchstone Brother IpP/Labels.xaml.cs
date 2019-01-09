@@ -71,7 +71,7 @@ namespace Touchstone_Brother_IpP
             SelectedLabel = LabelListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as TLabel;
             if (SelectedLabel != null)
             {
-                var result = PMessageBox.Show("Print for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                var result = (Forms.DialogResult)PMessageBox.Show("Print for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
                 if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.PrintManage.Print(SelectedLabel);

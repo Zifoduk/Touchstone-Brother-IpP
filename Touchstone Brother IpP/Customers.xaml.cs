@@ -80,7 +80,7 @@ namespace Touchstone_Brother_IpP
             {
                 var CustomerInformation = CustomerListView.ItemContainerGenerator.ItemFromContainer(item) as Customer;
 
-
+                CurrentCustomer = CustomerInformation;
                 AsyncContext.Run(() => _viewModel.GenerateCustomerView(CustomerInformation));
                 _viewModel.ResetLabelView();
             }
@@ -113,7 +113,7 @@ namespace Touchstone_Brother_IpP
         {
             if (SelectedLabel != null && SelectedLabel != DefaultLabel)
             {
-                var result = PMessageBox.Show("Print for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                var result = (Forms.DialogResult)PMessageBox.Show("Print for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
                 if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.PrintManage.Print(SelectedLabel);
@@ -128,7 +128,7 @@ namespace Touchstone_Brother_IpP
             var SelectedCustomer = CustomerListView.ItemContainerGenerator.ItemFromContainer(ParentItem) as Customer;
             if (SelectedCustomer != null)
             {
-                var result = PMessageBox.Show("Delete Customer: " + SelectedCustomer.Name, "Delete Customer: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                var result = (Forms.DialogResult)PMessageBox.Show("Delete Customer: " + SelectedCustomer.Name, "Delete Customer: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
                 if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.FirebaseManage.DeleteCustomer(SelectedCustomer ,CustomersList);
@@ -140,7 +140,7 @@ namespace Touchstone_Brother_IpP
         {
             if (SelectedLabel != null && SelectedLabel != DefaultLabel)
             {
-                var result = PMessageBox.Show("Delete for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
+                var result = (Forms.DialogResult)PMessageBox.Show("Delete for: " + SelectedLabel.Name + "\nCollection Date is: " + SelectedLabel.DeliveryDate, "Print for: " + SelectedLabel.Name, Forms.MessageBoxButtons.YesNo);
                 if (result == Forms.DialogResult.Yes)
                 {
                     MainWindow.FirebaseManage.DeleteLabel(SelectedLabel, CustomersList);
@@ -152,7 +152,7 @@ namespace Touchstone_Brother_IpP
         {
             if (ViewQRCode.Source != null && CurrentCustomer != null)
             {
-
+                _viewModel.PrintQR(CurrentCustomer);
             }
         }
     }

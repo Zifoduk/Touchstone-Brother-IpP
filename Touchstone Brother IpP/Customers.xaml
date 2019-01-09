@@ -35,38 +35,30 @@
                 <ColumnDefinition Width="520"/>
                 <ColumnDefinition Width="520"/>
             </Grid.ColumnDefinitions>
-            <ListView Grid.Column="0" Margin="35 0 0 0" Width="1010" HorizontalAlignment="Left" Name="CustomerListView" ItemsSource="{Binding CustomerListViewSource}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+            <ListView Grid.Column="0" Margin="30 0 0 0" Width="1010" HorizontalAlignment="Left" Name="CustomerListView" ItemsSource="{Binding CustomerListViewSource}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <WrapPanel>
+                            <WrapPanel Height="50">
                                 <Grid>
                                     <WrapPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="40"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
-                                                <Button x:Name="ButtonDelete" Width="100" Height="35" Margin="10 5 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="#ff0000" Click="DeleteCustomerButton_Click">
+                                                <Button x:Name="ButtonDelete" Width="20" Height="50" Margin="0 0 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="#ff0000" ToolTip="Delete" Click="DeleteCustomerButton_Click">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <materialDesign:PackIcon Kind="DeleteVariant" VerticalAlignment="Center" Margin="0 2 0 0"/>
-                                                        <TextBlock Text="DELETE " VerticalAlignment="Center" Margin="2 0 0 0"/>
+                                                        <materialDesign:PackIcon Kind="DeleteVariant" VerticalAlignment="Center" Margin="0 0 0 0"/>
+                                                        <TextBlock Text="DELETE " VerticalAlignment="Center" Margin="0 0 0 0"/>
                                                     </StackPanel>
                                                 </Button>
                                             </StackPanel>
-                                             <StackPanel Grid.Column="1" Margin="20">
+                                            <StackPanel Grid.Column="1" Margin="0 5 0 0">
                                                 <TextBlock Text="Name: "/>
                                                 <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="2" Margin="20">
-                                                <TextBlock>
-                                                <Run Text="Labels: "/>
-                                                <Run Text="{Binding Path=AllLabels.Count, Mode=OneWay}" FontWeight="Bold"/>
-                                                </TextBlock>
-                                            </StackPanel>
-
                                         </Grid>
                                     </WrapPanel>
                                 </Grid>

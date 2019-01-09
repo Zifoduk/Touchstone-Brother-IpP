@@ -160,14 +160,9 @@
                         <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 5 0 0"/>
                         <Line X1="130" Y1="0" X2="0" Y2="0" Stroke="White" StrokeThickness="1"/>
                         <ListView>
-                            <ListViewItem Background="Yellow">
+                            <ListViewItem x:Name="LogoutListViewItem" Background="Yellow" PreviewMouseLeftButtonUp="LogoutListViewItem_PreviewMouseLeftButtonUp">
                                 <Grid HorizontalAlignment="Center">
-                                    <TextBlock Margin="40 0 0 0" Text="Login" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
-                                </Grid>
-                            </ListViewItem>
-                            <ListViewItem Margin="0 1 0 0" Background="LightBlue" Visibility="{Binding Path=IsLogged, Converter={StaticResource  BoolToVisConv}}">
-                                <Grid>
-                                    <TextBlock Margin="30 0 0 0" Text="Register" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
+                                    <TextBlock Margin="30 0 0 0" Text="Logout" FontFamily="Arial" Foreground="Black" FontWeight="Heavy"/>
                                 </Grid>
                             </ListViewItem>
                             <ListViewItem x:Name="SettingsEnableDebugListViewItem" PreviewMouseLeftButtonUp="SettingsEnableDebugListViewItem_PreviewMouseLeftButtonUp">

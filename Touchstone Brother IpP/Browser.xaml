@@ -1,0 +1,25 @@
+﻿<Window x:Class="Touchstone_Brother_IpP.Browser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModels="clr-namespace:Touchstone_Brother_IpP.Models"
+        xmlns:local="clr-namespace:Touchstone_Brother_IpP"        
+        DataContext="{d:DesignInstance ViewModels:BrowserViewModel}"
+        mc:Ignorable="d"
+        Title="Browser" Height="600" Width="800" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF2B2B2B">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="700"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Height="500" Width="700">
+            <Frame NavigationUIVisibility="Hidden" Content="{Binding ViewFrameContext}"/>
+        </Grid>
+    </Grid>
+</Window>

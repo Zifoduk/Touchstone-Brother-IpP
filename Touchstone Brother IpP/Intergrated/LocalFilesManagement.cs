@@ -88,6 +88,8 @@ namespace Touchstone_Brother_IpP.Intergrated
             }
         }
 
+        public string TempBmpFile = TempFolder + @"tmp.bmp";
+
         public List<TLabel> SourceLabels = new List<TLabel>();
         public ICollection<TLabel> ISourceLabels { get; set; }
 
@@ -141,8 +143,14 @@ namespace Touchstone_Brother_IpP.Intergrated
                             var text = PdfTextExtractor.GetTextFromPage(reader, 1, new SimpleTextExtractionStrategy());
                             textlines = text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (var line in textlines)
-                                if (line.Contains("@ipostparcels"))
+                            {
+                                Console.WriteLine(line);
+                                if (line.Contains("UKM/OPS"))
+                                {
                                     pdfFiles.Add(file);
+                                    break;                                    
+                                }
+                            }
                         }
                     }
                 pdfFiles.ForEach(file => File.Move(file, (SourceFolder + Path.GetFileName(file))));
@@ -377,14 +385,17 @@ namespace Touchstone_Brother_IpP.Intergrated
                 Console.WriteLine(e);
             }
         }
-        public void Save(Bitmap BmpFile, string key, SaveConfig config)
+        public void Save(Bitmap BmpFile, string key, SaveConfig config, bool temp = false)
         {
             try
             {
                 switch (config)
                 {
                     case SaveConfig.QRCode:
-                        BmpFile.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+                        if(!temp)
+                            BmpFile.Save(TempFolder + key + @".tmp", ImageFormat.Bmp);
+                        if (temp)
+                            BmpFile.Save(TempFolder + @"tmp.bmp", ImageFormat.Bmp);
                         break;
                     default:
                         break;
@@ -394,6 +405,12 @@ namespace Touchstone_Brother_IpP.Intergrated
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public void ClearTmp(bool bmp = false)
+        {
+            if(bmp)
+                File.Delete(TempBmpFile);
         }
 
         public List<Customer> LoadCustomerList()

@@ -17,6 +17,7 @@ namespace Touchstone_Brother_IpP.Intergrated
     public class FirebaseManagement
     {
         //change so authtokenasyncfactory has to be manually typed in at settings
+        Core AppCore { get { return App.Core; } }
         FirebaseClient firebase;
         private bool IsOnline
         {
@@ -46,7 +47,6 @@ namespace Touchstone_Brother_IpP.Intergrated
         }
 
         #region Connect to Firebase
-
         public async Task<int> GetAuthorisation(string email, string password)
         {
             var token = "";
@@ -102,7 +102,6 @@ namespace Touchstone_Brother_IpP.Intergrated
                 return 3;
             }
         }
-
         public async Task<int> CreateUser(string email, string password, bool goodPass)
         {
             try
@@ -132,11 +131,9 @@ namespace Touchstone_Brother_IpP.Intergrated
                 return 4;
             }
         }
-
         #endregion
 
         #region Database Manipulation
-
         public async Task FetchCustomers(List<Customer> customersList, bool test)
         {
             try
@@ -180,7 +177,6 @@ namespace Touchstone_Brother_IpP.Intergrated
                 //Insert code
             }
         }
-
         public async Task<List<TLabel>> FetchCustomerLabels(string customerKey)
         {
             List<TLabel> RetrievedList = new List<TLabel>();
@@ -221,6 +217,56 @@ namespace Touchstone_Brother_IpP.Intergrated
             }
         }
 
+        class ylabel { List<TLabel> lebel { get; set; } }
+
+        public async Task<List<List<TLabel>>> FetchAllLabels()
+        {
+            List<List<TLabel>> RetrievedList = new List<List<TLabel>>();
+            try
+            {
+                if (IsOnline)
+                {
+                    var Labels = await firebase.Child("Labels").OrderByKey().OnceAsync<String>();
+                    Console.WriteLine("lol");
+                }
+                else
+                {
+                    /////Insert code for offline reading
+                }
+                return RetrievedList;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return null;
+            }
+        }
+
+        /*private string FindUID(InputType inputType, Customer customer = null, TLabel label = null)
+        {
+            switch (inputType)
+            {
+                case InputType.Customer:
+                    break;
+                case InputType.Label:
+                    List<string> PotentialCustomers = new List<string>();
+                    List<string> PotentialLabels = new List<string>();
+                    foreach (var cust in AppCore.CurrentCustomerList)
+                    {
+                        if (cust.Name == label.Name || cust.a)
+                            PotentialCustomers.Add(customer.Name);
+                    }
+                    PotentialCustomers.Add("None");
+                    string result = (string)PMessageBox.Show("Select Correct Customer", "Select Customer", null, true, PotentialCustomers);
+                    Console.WriteLine(result);
+                    return result;
+                case InputType.String:
+                    break;
+                default:
+                    break;
+            }
+            
+        }*/
         private string GenerateUID()
         {
             Guid guid = Guid.NewGuid();
@@ -237,20 +283,32 @@ namespace Touchstone_Brother_IpP.Intergrated
             Thread.Sleep(1000);
             App.CustomerPageViewModel.GenerateCustomerList();
         }
-
-        public async void InsertLabel(TLabel inLabel/*, List<Customer> customersList*/)
+        public async void DeleteCustomer(Customer inCustomer, List<Customer> customersList)
         {
-            /*int index = customersList.FindIndex(c => c.Name == inLabel.Name);
-            int indexLabel = customersList[index].AllLabels.Count;
-            if (index < 0)
-                return;
-            else
+            try
             {
-                var name = customersList[index].Name;
-                await firebase.Child("Customers/").Child(inLabel.Name).Child("AllLabels").Child(indexLabel.ToString()).PutAsync(inLabel);
-            }*/
+                int index = customersList.FindIndex(c => c.Name == inCustomer.Name);
+                if (index < 0)
+                    return;
+                else
+                {
+                    customersList.RemoveAt(index);
+                    await firebase.Child("Customers").Child(inCustomer.Name).DeleteAsync();
+                    App.CustomerPageViewModel.GenerateCustomerList();
 
-            await firebase.Child("Labels").Child(inLabel.Key).PostAsync(inLabel, true);
+                }
+            }
+            catch (Exception e)
+            {
+                var result = PMessageBox.Show("Failed to delete customer " + inCustomer.Name + "\n\r Expection: " + e, "Failed to delete label for" + inCustomer.Name, System.Windows.Forms.MessageBoxButtons.OK);
+                Console.WriteLine(e);
+            }
+        }
+
+        public async void InsertLabel(TLabel inLabel)
+        {
+           //FindUID(inLabel.Name);
+            //await firebase.Child("Labels").Child(inLabel.Key).PostAsync(inLabel, true);
         }
         public async void DeleteLabel(TLabel inLabel, List<Customer> customersList)
         {
@@ -275,32 +333,16 @@ namespace Touchstone_Brother_IpP.Intergrated
                 Console.WriteLine(e);
             }
         }
-
-        public async void DeleteCustomer(Customer inCustomer, List<Customer> customersList)
-        {
-            try
-            {
-                int index = customersList.FindIndex(c => c.Name == inCustomer.Name);
-                if (index < 0)
-                    return;
-                else
-                {
-                    customersList.RemoveAt(index);
-                    await firebase.Child("Customers").Child(inCustomer.Name).DeleteAsync();
-                    App.CustomerPageViewModel.GenerateCustomerList();
-
-                }
-            }
-            catch (Exception e)
-            {
-                var result = PMessageBox.Show("Failed to delete customer " + inCustomer.Name + "\n\r Expection: " + e, "Failed to delete label for" + inCustomer.Name, System.Windows.Forms.MessageBoxButtons.OK);
-                Console.WriteLine(e);
-            }
-        }
-
         #endregion 
     }
 
+
+    public enum InputType
+    {
+        Customer,
+        Label,
+        String
+    }
 
 
     public class ListenChanges<T> : IObserver<FirebaseEvent<T>>

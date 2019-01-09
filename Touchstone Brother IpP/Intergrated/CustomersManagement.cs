@@ -15,10 +15,12 @@ namespace Touchstone_Brother_IpP.Intergrated
 {
     public class CustomersManagement
     {
+        Core AppCore { get { return App.Core; } }
         private bool IsOnline { get { return App.OfflineManagement.IsOnline; } }
 
+        List<List<TLabel>> l;
         TLabel SelectedLabel = null;
-        public List<Customer> CustomersList = new List<Customer>();
+        private List<Customer> CustomersList = new List<Customer>();
         public Customer CurrentCustomer = null;
 
         public CustomersManagement()
@@ -36,6 +38,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     var newCustomerList = new List<Customer>();
                     await MainWindow.FirebaseManage.FetchCustomers(newCustomerList, false);
                     CustomersList = newCustomerList;
+                    AppCore.CurrentCustomerList = CustomersList;
                     App.OfflineManagement.OfflineExport(OfflineConfig.CustomerList);
                     return newCustomerList;
                 }
@@ -45,6 +48,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                     var newCustomerList = new List<Customer>();
                     newCustomerList = App.OfflineManagement.OfflineImport<List<Customer>>(OfflineConfig.CustomerList);
                     CustomersList = newCustomerList;
+                    AppCore.CurrentCustomerList = CustomersList;
                     return newCustomerList;
                 }
                 
@@ -69,6 +73,7 @@ namespace Touchstone_Brother_IpP.Intergrated
                 CustomerViewInformation customerViewInformation = new CustomerViewInformation();
                 if (IsOnline)
                 {
+                    l = await App.FirebaseManagement.FetchAllLabels();
                     customerViewInformation.RetrievedLabels = await App.FirebaseManagement.FetchCustomerLabels(CustomerInformation.Key);
                     App.OfflineManagement.OfflineExport(OfflineConfig.CustomerLabels, labels: customerViewInformation.RetrievedLabels, key: CustomerInformation.Key);
                 }

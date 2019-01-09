@@ -53,8 +53,7 @@ namespace Touchstone_Brother_IpP
         public static Customers customersPage = new Customers();
         public static MainWindowViewModel ViewModel { get; set; } = new MainWindowViewModel();
 
-        public static bool DDebug;
-
+        private bool LogoutState = false;
         public bool tester = false;
 
         public static bool startup;
@@ -144,13 +143,11 @@ namespace Touchstone_Brother_IpP
                 {
                     SettingsEnableDebugCheckbox.IsChecked = false;
                     ViewModel.Debug = false;
-                    DDebug = false;
                 }
                 else if (SettingsEnableDebugCheckbox.IsChecked == false)
                 {
                     SettingsEnableDebugCheckbox.IsChecked = true;
                     ViewModel.Debug = true;
-                    DDebug = true;
                 }
         }
 
@@ -158,22 +155,7 @@ namespace Touchstone_Brother_IpP
         {
             Customer newcustomer = new Customer
             {
-                Name = "Daniel",
-                AllLabels = new List<TLabel> { new TLabel
-            {
-            Name = "Daniel",
-            Address = "jusadk",
-            Barcode = "45846213",
-            DeliveryDate = "7/12/11",
-            ConsignmentNumber = "6731529",
-            PostCode = "ZZ231YJ",
-            Telephone = "071536352728",
-            Location =  "this place",
-            LocationNumber = "33",
-            ParcelNumber = "001",
-            ParcelSize = "L",
-            Weight = "too heavy"
-            } }
+                Name = "JANE MAKINA",               
             };
             FirebaseManage.InsertCustomer(newcustomer, customersPage.CustomersList);
         }
@@ -204,19 +186,18 @@ namespace Touchstone_Brother_IpP
 
             TLabel L = new TLabel
             {
-                Name = "Daniel",
-                Address = stringGenerator(25),
-                Barcode = intGenerator(20).ToString(),
-                DeliveryDate = intGenerator(8).ToString(),
-                ConsignmentNumber = intGenerator(20).ToString(),
-                PostCode = stringGenerator(7),
-                Telephone = intGenerator(11).ToString(),
-                Location = stringGenerator(5),
-                LocationNumber = intGenerator(2).ToString(),
+                Name = "MARIA TANYANYIWA",
+                Address = "FLAT 8,\r\nRADLEY COURT,\r\n34 BEACHBOROUGH ROAD,\r\nBROMLEY",
+                Barcode = "ABR1 540617530372272001",
+                DeliveryDate = "07/09/2018",
+                ConsignmentNumber = "40617530372272",
+                PostCode = "BR1 5RL",
+                Telephone = "+44 7887 420381",
+                Location = "DARTFORD",
+                LocationNumber = "30",
                 ParcelNumber = "001",
                 ParcelSize = "L",
-                Weight = "Too heavy",
-                Key = "-AuS7Bd5Dw0q-SkKD434"
+                Weight = "up to 15.0 kg"
             };
             FirebaseManage.InsertLabel(L);
         }
@@ -225,7 +206,14 @@ namespace Touchstone_Brother_IpP
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //you gonna wanna change this to have a shutdown button
-            App.AppClose();
+            if(!LogoutState)
+                App.AppClose();
+        }
+
+        private void LogoutListViewItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            LogoutState = true;
+            ViewModel.TriggerLogout();
         }
     }
 }

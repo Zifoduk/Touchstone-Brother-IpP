@@ -82,16 +82,16 @@
                     <Image x:Name="ContentImage" Width="100" Height="100"/>
                     <TextBlock x:Name="ContentText" Margin="40 20 40 20" TextWrapping="NoWrap" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </Grid>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ItemsControl x:Name="MessageBoxContentButtons" Margin="5 0 5 0">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ItemsControl x:Name="MessageBoxContentButtons" Margin="0 5 0 5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
+                                <StackPanel Orientation="Vertical"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button x:Name="ContentButton" Margin="-1 0 0 10" BorderBrush="{x:Null}" Background="#19ffffff" Content="{Binding ContentButtonText}" FontStyle="Normal" FontWeight="Normal" Width="90" Height="40" Click="ContentButton_Click"/>
+                                <Button x:Name="ContentButton" Margin="-1 0 0 10" BorderBrush="{x:Null}" Background="#19ffffff" Content="{Binding ContentButtonText}" FontStyle="Normal" FontWeight="Normal" Width="Auto" Height="40" Click="ContentButton_Click"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

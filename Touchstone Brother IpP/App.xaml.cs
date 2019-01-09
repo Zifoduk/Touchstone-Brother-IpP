@@ -17,6 +17,7 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class App : Application
     {
+        public static Core Core = new Core();
         public static OfflineManagement OfflineManagement = new OfflineManagement();
         public static FirebaseManagement FirebaseManagement = new FirebaseManagement();
         public static LocalFilesManagement LocalFilesManagement = new LocalFilesManagement();
@@ -34,6 +35,13 @@ namespace Touchstone_Brother_IpP
             mainWindow = mw;
             mainWindow.Show();
             startup.Close();
+        }
+
+        public static void PostLogout()
+        {
+            startup = new Startup();
+            startup.Show();
+            mainWindow.Close();
         }
         
         public static void SaveData()
