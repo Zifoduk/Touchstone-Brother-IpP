@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using Touchstone_Brother_IpP;
 using Touchstone_Brother_IpP.Properties;
 using Touchstone_Brother_IpP.Intergrated;
+using Touchstone_Brother_IpP.Models;
+using forme = System.Windows.Forms;
 
 namespace Touchstone_Brother_IpP
 {
@@ -84,6 +86,8 @@ namespace Touchstone_Brother_IpP
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
+            //Testing Browser
+            BrowserViewModel broser = new BrowserViewModel(BrowserViewModel.BrowserSettings.Customers, SelectionMode.Extended);
             if (!IsWorking)
             {
                 IsWorking = true;

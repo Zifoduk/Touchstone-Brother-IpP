@@ -101,41 +101,41 @@ namespace Touchstone_Brother_IpP
                 {
                     case Forms.MessageBoxButtons.OK:
                         if (buttonType == "OK")
-                            result = Forms.DialogResult.OK;
+                            result = Forms.DialogResult.OK.ToString();
                         break;
                     case Forms.MessageBoxButtons.OKCancel:
                         if (buttonType == "OK")
-                            result = Forms.DialogResult.OK;
+                            result = Forms.DialogResult.OK.ToString();
                         else if (buttonType == "Cancel")
-                            result = Forms.DialogResult.Cancel;
+                            result = Forms.DialogResult.Cancel.ToString();
                         break;
                     case Forms.MessageBoxButtons.AbortRetryIgnore:
                         if (buttonType == "Abort")
-                            result = Forms.DialogResult.Abort;
+                            result = Forms.DialogResult.Abort.ToString();
                         else if (buttonType == "Retry")
-                            result = Forms.DialogResult.Retry;
+                            result = Forms.DialogResult.Retry.ToString();
                         else if (buttonType == "Ignore")
-                            result = Forms.DialogResult.Ignore;
+                            result = Forms.DialogResult.Ignore.ToString();
                         break;
                     case Forms.MessageBoxButtons.RetryCancel:
                         if (buttonType == "Retry")
-                            result = Forms.DialogResult.Retry;
+                            result = Forms.DialogResult.Retry.ToString();
                         else if (buttonType == "Cancel")
-                            result = Forms.DialogResult.Cancel;
+                            result = Forms.DialogResult.Cancel.ToString();
                         break;
                     case Forms.MessageBoxButtons.YesNo:
                         if (buttonType == "Yes")
-                            result = Forms.DialogResult.Yes;
+                            result = Forms.DialogResult.Yes.ToString();
                         else if (buttonType == "No")
-                            result = Forms.DialogResult.No;
+                            result = Forms.DialogResult.No.ToString();
                         break;
                     case Forms.MessageBoxButtons.YesNoCancel:
                         if (buttonType == "Yes")
-                            result = Forms.DialogResult.Yes;
+                            result = Forms.DialogResult.Yes.ToString();
                         else if (buttonType == "No")
-                            result = Forms.DialogResult.No;
+                            result = Forms.DialogResult.No.ToString();
                         else if (buttonType == "Cancel")
-                            result = Forms.DialogResult.Cancel;
+                            result = Forms.DialogResult.Cancel.ToString();
                         break;
                 }
             else

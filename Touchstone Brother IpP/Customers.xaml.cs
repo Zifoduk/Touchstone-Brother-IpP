@@ -61,6 +61,10 @@ namespace Touchstone_Brother_IpP
             }
             if (button.Name == "ButtonSortPostCode")
             {
+                //test browser
+                BrowserViewModel browser = new BrowserViewModel(BrowserViewModel.BrowserSettings.Customers, SelectionMode.Extended);
+
+
             }
             if (button.Name == "ButtonSortDeliveryDate")
             {

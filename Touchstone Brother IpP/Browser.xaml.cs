@@ -20,10 +20,24 @@ namespace Touchstone_Brother_IpP
     /// </summary>
     public partial class Browser : Window
     {
-        public static BrowserViewModel ViewModel { get; set; } = new BrowserViewModel();
-        public Browser()
+        public static BrowserViewModel ViewModel { get; set; }
+        public Browser(BrowserViewModel browserViewModel)
         {
             InitializeComponent();
+            ViewModel = browserViewModel;
+            DataContext = ViewModel;
+        }
+
+        public void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Quit();
+        }
+
+        private void DragMove(object sender, RoutedEventArgs e)
+        {
+            this.DragMove();
         }
     }
+
+
 }

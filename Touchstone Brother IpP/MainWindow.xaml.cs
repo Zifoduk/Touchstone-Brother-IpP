@@ -92,7 +92,6 @@ namespace Touchstone_Brother_IpP
         public void LabelsPage()
         {
             MainView.Content = labelsPage;
-            Console.WriteLine("Breakline");
             LocalFilesManage.PushToList();
         }
         public void CustomersPage()

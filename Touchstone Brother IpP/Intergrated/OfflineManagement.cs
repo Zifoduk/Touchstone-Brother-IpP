@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using Brushes = System.Windows.Media.Brushes;
 
@@ -33,6 +34,7 @@ namespace Touchstone_Brother_IpP.Intergrated
         #region OnlineConnection
 
         bool previousIsOnline = false;
+        bool previousSave = false;
         public void CheckForInternetConnection()
         {
             while (true)
@@ -48,45 +50,96 @@ namespace Touchstone_Brother_IpP.Intergrated
                             IsOnline = true;
                             var result = OfflineExport(OfflineConfig.CustomerList);
                             if (result) { }
-                            //Finish
-                            else { }
-                            //Finish
+                            //Finish - Successful save
+                            else
+                            {
+                                var Popup = PMessageBox.Show("Error x000054", "Error", null, true, new List<string> { "Retry", "Ignore"});
+                                if(Popup.ToString() == "Retry")
+                                {
+                                    for(int i=1;i<3;i++)
+                                    {
+                                        var retry = OfflineExport(OfflineConfig.CustomerList);
+                                        if(retry)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            var pop = PMessageBox.Show("Error x000054", "Error", null, true, new List<string> { "Retry", "Ignore" });
+                                            if(pop.ToString() == "Retry")
+                                            {
+                                                continue;
+                                            }
+                                            else if (pop.ToString() == "Ignore")
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if(Popup.ToString() == "Ignore")
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
-
-                    /*Uri Url = new Uri("http://www.microsoft.com");
-
-                    WebRequest WebReq;
-                    WebResponse Resp;
-                    WebReq = WebRequest.Create(Url);
-
-                    try
-                    {
-                        Resp = WebReq.GetResponse();
-                        Resp.Close();
-                        WebReq = null;
-                        if (!previousIsOnline)
-                        {
-                            IsOnline = true;
-                            var result = OfflineExport(OfflineConfig.CustomerList);
-                        }
-                    }
-
-                    catch
-                    {
-                        WebReq = null;
-                        IsOnline = false;
-                        if (previousIsOnline)
-                        {
-                            IsOnline = false;
-                        }
-                    }*/
                 }
                 catch(Exception)
                 {
                     if (previousIsOnline)
                     {
                         IsOnline = false;
+                        if(previousSave)
+                        {
+                            //Compare current Data and Previous Data
+                        }
+                        else
+                        {
+                            var result = OfflineExport(OfflineConfig.CustomerList);
+                            if (result) { }
+                            //Finish - Successful save
+                            else
+                            {
+                                var Popup = PMessageBox.Show("Error x000054", "Error", null, true, new List<string> { "Retry", "Ignore" });
+                                if (Popup.ToString() == "Retry")
+                                {
+                                    for (int i = 1; i < 3; i++)
+                                    {
+                                        var retry = OfflineExport(OfflineConfig.CustomerList);
+                                        if (retry)
+                                        {
+                                            previousSave = true;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            var pop = PMessageBox.Show("Error x000054", "Error", null, true, new List<string> { "Retry", "Ignore" });
+                                            if (pop.ToString() == "Retry")
+                                            {
+                                                continue;
+                                            }
+                                            else if (pop.ToString() == "Ignore")
+                                            {
+                                                previousSave = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (Popup.ToString() == "Ignore")
+                                {
+                                    previousSave = false;
+                                    break;
+                                }
+                            }
+
+                        }
+                        
+                    }
+                    else
+                    {
+                        App.Core.CurrentCustomerList = OfflineImport<List<Customer>>(OfflineConfig.CustomerList);
                     }
                 }
 
@@ -113,7 +166,6 @@ namespace Touchstone_Brother_IpP.Intergrated
                     Console.WriteLine("unable to changed mainwindow UI");
                 }
                 Console.WriteLine(IsOnline);
-                Console.WriteLine("Check internet End " + DateTime.Now.ToLongTimeString().ToString());
                 Thread.Sleep(500);
             }
         }
