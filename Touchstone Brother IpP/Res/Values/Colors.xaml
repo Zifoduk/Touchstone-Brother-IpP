@@ -2,4 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Touchstone_Brother_IpP.Res">
 
+    <!-- Dark Theme-->
+    <SolidColorBrush x:Key="colorDarkPrimary" Color="#2D2D2D"/>
+    <SolidColorBrush x:Key="colorDarkSecondary" Color="#FFF"/>
+    <SolidColorBrush x:Key="colorDarkAccent" Color="#FF16B5FF"/>
+    
+
 </ResourceDictionary>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Touchstone_Brother_IpP"
         mc:Ignorable="d"
         xmlns:MaterialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Startup" Height="400" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Foreground="White" FontFamily="Corbel" WindowStyle="None" Background="#2D2D2D" Loaded="Window_Loaded">
+        Title="Startup" Height="400" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Style="{StaticResource DarkColors}" Loaded="Window_Loaded">
 
     <Window.Resources>
         <Storyboard x:Key="SignInExpand">
@@ -36,50 +36,10 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Grid>
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Grid>
-                                                <Ellipse Fill="{TemplateBinding Background}"/>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <EventTrigger RoutedEvent="MouseEnter">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation From="#ff1414" To="#ff5900" Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="MouseLeave">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation From="#ff5900" To="#ff1414" Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="PreviewMouseDown">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation From="#ff5900" To="#ffccaf" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="PreviewMouseUp">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation From="#ffccaf" To="#ff5900" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Resources>
-                        <Button x:Name="ButtonClose" VerticalAlignment="Center" Background="Red" BorderBrush="{x:Null}" Margin="7 5 5 0" Width="12" Height="12" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Click="ButtonClose_Click"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonMinimise" Click="ButtonClose_Click" Style="{StaticResource MinimiseButton}"/>
+                            <Button x:Name="ButtonClose" Click="ButtonClose_Click" Style="{StaticResource ExitButton}"/>
+                        </StackPanel>
                     </Grid>
                 </StackPanel>
                 <StackPanel>
